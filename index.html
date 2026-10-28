@@ -1830,8 +1830,58 @@
       return Number(n || 0).toLocaleString('ru-RU');
     }
 
+    // ─────────────────────────────────────────────────────────────
+    // MOBILE KEYBOARD AUTO-DISMISS UX
+    // ─────────────────────────────────────────────────────────────
+    function dismissKeyboard() {
+      if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+        document.activeElement.blur();
+      }
+    }
+
+    // 1. Dismiss on tap/click outside active input
+    document.addEventListener('touchstart', (e) => {
+      if (document.activeElement && document.activeElement.tagName === 'INPUT') {
+        if (e.target !== document.activeElement) {
+          document.activeElement.blur();
+        }
+      }
+    }, { passive: true });
+
+    document.addEventListener('click', (e) => {
+      if (document.activeElement && document.activeElement.tagName === 'INPUT') {
+        if (e.target !== document.activeElement) {
+          document.activeElement.blur();
+        }
+      }
+    });
+
+    // 2. Dismiss on scroll or touch move
+    window.addEventListener('scroll', () => {
+      if (document.activeElement && document.activeElement.tagName === 'INPUT') {
+        document.activeElement.blur();
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', () => {
+      if (document.activeElement && document.activeElement.tagName === 'INPUT') {
+        document.activeElement.blur();
+      }
+    }, { passive: true });
+
+    // 3. Dismiss on Enter / Done on virtual keyboard
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        if (document.activeElement && document.activeElement.tagName === 'INPUT') {
+          e.preventDefault();
+          document.activeElement.blur();
+        }
+      }
+    });
+
     // Tab Navigation
     function switchTab(tabId) {
+      dismissKeyboard();
       haptic('light');
       document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
@@ -1873,6 +1923,7 @@
     }
 
     function selectCategoryTag(btn, catName) {
+      dismissKeyboard();
       haptic('light');
       const wasActive = btn.classList.contains('active');
       document.querySelectorAll('.cat-tag').forEach(t => t.classList.remove('active'));
@@ -1909,6 +1960,7 @@
     const incomeInputWrap = document.getElementById('incomeInputWrap');
 
     function setIncomeMode(mode) {
+      dismissKeyboard();
       haptic('medium');
       incomeMode = mode;
       document.querySelectorAll('.chips-group .chip-btn').forEach((btn, idx) => {
@@ -1951,6 +2003,7 @@
     });
 
     function addPrice(delta) {
+      dismissKeyboard();
       haptic('light');
       let current = parseFloat(priceInput.value) || 0;
       current += delta;
@@ -1963,6 +2016,7 @@
     }
 
     function resetPrice() {
+      dismissKeyboard();
       haptic('medium');
       priceInput.value = 0;
       priceSlider.value = 0;
@@ -2548,6 +2602,17 @@
 
     // Initialize on load
     window.addEventListener('DOMContentLoaded', () => {
+      // 4. Dismiss keyboard on touching range sliders or clicking chips/controls
+      document.querySelectorAll('input[type="range"]').forEach(slider => {
+        slider.addEventListener('touchstart', dismissKeyboard, { passive: true });
+        slider.addEventListener('pointerdown', dismissKeyboard);
+        slider.addEventListener('mousedown', dismissKeyboard);
+      });
+      document.querySelectorAll('.quick-chip, .cat-tag, .chip-btn, .nav-item, .trap-card, .btn-save, .btn-freeze').forEach(el => {
+        el.addEventListener('touchstart', dismissKeyboard, { passive: true });
+        el.addEventListener('click', dismissKeyboard);
+      });
+
       recalcScanner();
       updateHeaderBadge();
       renderQuestion();
