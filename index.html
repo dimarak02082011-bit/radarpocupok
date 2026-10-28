@@ -112,6 +112,12 @@
       text-transform: uppercase;
     }
 
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .savings-badge {
       display: flex;
       align-items: center;
@@ -129,6 +135,28 @@
 
     .savings-badge:active {
       transform: scale(0.96);
+    }
+
+    .help-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-glass);
+      color: var(--text-muted);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .help-btn:active {
+      transform: scale(0.92);
+      background: rgba(139, 92, 246, 0.2);
+      color: #fff;
+      border-color: var(--accent-purple);
     }
 
     /* Container */
@@ -747,9 +775,9 @@
       background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(139, 92, 246, 0.15));
       border: 1px solid rgba(16, 185, 129, 0.3);
       border-radius: var(--radius-lg);
-      padding: 22px;
+      padding: 24px 20px;
       text-align: center;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
     .saved-hero-title {
@@ -763,39 +791,25 @@
 
     .saved-amount {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 36px;
+      font-size: 38px;
       font-weight: 800;
       color: #fff;
       letter-spacing: -1px;
-      text-shadow: 0 0 20px var(--accent-emerald-glow);
+      text-shadow: 0 0 24px var(--accent-emerald-glow);
       margin-bottom: 12px;
     }
 
-    .saved-substats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .saved-substat-box {
-      background: rgba(10, 13, 20, 0.5);
-      border: 1px solid var(--border-glass);
-      border-radius: var(--radius-md);
-      padding: 8px 10px;
-    }
-
-    .saved-substat-val {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 15px;
+    .saved-hours-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 7px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
       font-weight: 700;
       color: var(--accent-emerald);
-    }
-
-    .saved-substat-label {
-      font-size: 10px;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      font-weight: 600;
     }
 
     /* Frozen items block */
@@ -993,7 +1007,7 @@
       opacity: 0.6;
     }
 
-    /* TAB 3: QUIZ (10 QUESTIONS WITH SHUFFLE) */
+    /* TAB 3: KNOWLEDGE BASE (QUIZ & TRICKS UNIFIED) */
     .quiz-progress-bar {
       height: 6px;
       background: #1c2233;
@@ -1148,7 +1162,7 @@
       margin-bottom: 24px;
     }
 
-    /* TAB 4: TRICKS ACCORDION */
+    /* Tricks Accordion */
     .accordion-list {
       display: flex;
       flex-direction: column;
@@ -1249,7 +1263,7 @@
       font-size: 12px;
     }
 
-    /* Bottom Navigation Bar */
+    /* Bottom Navigation Bar (3 TABS) */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -1328,6 +1342,144 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+
+    /* ONBOARDING MODAL */
+    .onboarding-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(8, 10, 16, 0.86);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .onboarding-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .onboarding-card {
+      background: linear-gradient(145deg, rgba(24, 30, 46, 0.98), rgba(15, 19, 30, 0.98));
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      border-radius: var(--radius-lg);
+      padding: 28px 22px 22px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(139, 92, 246, 0.2);
+      text-align: center;
+      position: relative;
+      transform: translateY(20px) scale(0.96);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .onboarding-overlay.open .onboarding-card {
+      transform: translateY(0) scale(1);
+    }
+
+    .onboarding-skip-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: var(--radius-pill);
+      transition: color 0.2s;
+    }
+
+    .onboarding-skip-btn:hover {
+      color: var(--text-main);
+    }
+
+    .onboarding-icon-wrap {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(139, 92, 246, 0.25));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin: 8px auto 16px;
+      box-shadow: 0 0 25px rgba(139, 92, 246, 0.25);
+    }
+
+    .onboarding-step-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-purple);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 6px;
+    }
+
+    .onboarding-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 10px;
+      letter-spacing: -0.3px;
+    }
+
+    .onboarding-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.55;
+      min-height: 64px;
+      margin-bottom: 22px;
+      padding: 0 4px;
+    }
+
+    .onboarding-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .onboarding-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.15);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .onboarding-dot.active {
+      width: 26px;
+      background: linear-gradient(90deg, var(--accent-emerald), var(--accent-purple));
+      box-shadow: 0 0 10px var(--accent-emerald-glow);
+    }
+
+    .onboarding-main-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--accent-purple), #6366f1);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 15px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 20px var(--accent-purple-glow);
+    }
+
+    .onboarding-main-btn:active {
+      transform: scale(0.97);
+    }
   </style>
 </head>
 <body>
@@ -1341,9 +1493,12 @@
         <p>Умный фильтр спонтанных трат</p>
       </div>
     </div>
-    <div class="savings-badge" onclick="switchTab('tab-saved')">
-      <span>💰</span>
-      <span id="headerSavingsVal">0 ₽</span>
+    <div class="header-right">
+      <div class="savings-badge" onclick="switchTab('tab-saved')">
+        <span>💰</span>
+        <span id="headerSavingsVal">0 ₽</span>
+      </div>
+      <button class="help-btn" onclick="openOnboarding(true)" title="Обучение">❓</button>
     </div>
   </header>
 
@@ -1512,7 +1667,7 @@
         </div>
       </div>
 
-      <!-- Risk Meter & Verdict -->
+      <!-- Risk Speedometer & Gauge -->
       <div class="gauge-card">
         <div class="meter-wrap">
           <div class="meter-header">
@@ -1530,7 +1685,7 @@
         </div>
       </div>
 
-      <!-- Action Buttons -->
+      <!-- Action Buttons (Active immediately if price > 0) -->
       <div class="scanner-actions">
         <button class="btn-save" onclick="saveToSavedPurchases()">
           <span>🛑</span>
@@ -1545,21 +1700,15 @@
     </section>
 
     <!-- ───────────────────────────────────────────────────────────── -->
-    <!-- TAB 2: SAVED MONEY (СОХРАНЕННЫЕ ДЕНЬГИ) -->
+    <!-- TAB 2: SAVED MONEY (СОХРАНЕННЫЕ ДЕНЬГИ — БЕЗ СНИКЕРСОВ) -->
     <!-- ───────────────────────────────────────────────────────────── -->
     <section id="tab-saved" class="tab-view">
       <div class="saved-hero">
         <div class="saved-hero-title">💰 Сохраненные деньги</div>
         <div class="saved-amount" id="totalSavedRub">0 ₽</div>
-        <div class="saved-substats">
-          <div class="saved-substat-box">
-            <div class="saved-substat-val" id="totalSavedHours">0.0 ч</div>
-            <div class="saved-substat-label">Часов жизни спасено</div>
-          </div>
-          <div class="saved-substat-box">
-            <div class="saved-substat-val" id="totalSavedSnickers">0 шт</div>
-            <div class="saved-substat-label">Батончиков Snickers</div>
-          </div>
+        <div class="saved-hours-pill">
+          <span>⏱</span>
+          <span id="totalSavedHours">0.0 часов труда сохранено</span>
         </div>
       </div>
 
@@ -1585,194 +1734,197 @@
     </section>
 
     <!-- ───────────────────────────────────────────────────────────── -->
-    <!-- TAB 3: QUIZ (10 LIFE CASES - SHUFFLED) -->
+    <!-- TAB 3: KNOWLEDGE BASE (ТРЕНАЖЕР + СПРАВОЧНИК УЛОВОК) -->
     <!-- ───────────────────────────────────────────────────────────── -->
-    <section id="tab-quiz" class="tab-view">
-      <div class="quiz-progress-bar">
-        <div class="quiz-progress-fill" id="quizProgFill"></div>
+    <section id="tab-knowledge" class="tab-view">
+
+      <!-- Sub-tabs Switcher -->
+      <div class="chips-group" style="margin-bottom: 18px;">
+        <button class="chip-btn active" id="btnSubQuiz" onclick="switchKnowledgeTab('quiz')">🎯 Тренажер (10 кейсов)</button>
+        <button class="chip-btn" id="btnSubTricks" onclick="switchKnowledgeTab('tricks')">🔍 Справочник уловок</button>
       </div>
 
-      <div class="quiz-card" id="quizCard">
-        <div class="quiz-badge" id="quizBadge">Кейс 1 из 10</div>
-        <div class="quiz-q-title" id="quizQTitle">...</div>
-
-        <div class="quiz-options" id="quizOptions">
-          <!-- Options rendered via JS -->
+      <!-- SUBVIEW 1: QUIZ -->
+      <div id="subview-quiz">
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill" id="quizProgFill"></div>
         </div>
 
-        <div class="quiz-explain-card" id="quizExplain">
-          <!-- Explanation -->
+        <div class="quiz-card" id="quizCard">
+          <div class="quiz-badge" id="quizBadge">Кейс 1 из 10</div>
+          <div class="quiz-q-title" id="quizQTitle">...</div>
+
+          <div class="quiz-options" id="quizOptions">
+            <!-- Options rendered via JS -->
+          </div>
+
+          <div class="quiz-explain-card" id="quizExplain">
+            <!-- Explanation -->
+          </div>
+
+          <button class="btn-next-q" id="btnNextQ" onclick="nextQuizQuestion()">
+            <span>Дальше</span>
+            <span>➔</span>
+          </button>
         </div>
 
-        <button class="btn-next-q" id="btnNextQ" onclick="nextQuizQuestion()">
-          <span>Дальше</span>
-          <span>➔</span>
-        </button>
+        <!-- Quiz Final Screen -->
+        <div class="quiz-card quiz-finish-card" id="quizFinishScreen" style="display: none;">
+          <div class="quiz-rank-emoji" id="finishEmoji">🏆</div>
+          <div class="quiz-score-num" id="finishScore">8 / 10</div>
+          <div class="quiz-rank-title" id="finishTitle">Финансовый Детектив</div>
+          <div class="quiz-rank-desc" id="finishDesc">...</div>
+          <button class="btn-save" style="background: linear-gradient(135deg, var(--accent-purple), #6366f1);" onclick="restartQuiz()">
+            <span>🔄</span>
+            <span>Пройти заново</span>
+          </button>
+        </div>
       </div>
 
-      <!-- Quiz Final Screen -->
-      <div class="quiz-card quiz-finish-card" id="quizFinishScreen" style="display: none;">
-        <div class="quiz-rank-emoji" id="finishEmoji">🏆</div>
-        <div class="quiz-score-num" id="finishScore">8 / 10</div>
-        <div class="quiz-rank-title" id="finishTitle">Финансовый Детектив</div>
-        <div class="quiz-rank-desc" id="finishDesc">...</div>
-        <button class="btn-save" style="background: linear-gradient(135deg, var(--accent-purple), #6366f1);" onclick="restartQuiz()">
-          <span>🔄</span>
-          <span>Пройти заново</span>
-        </button>
+      <!-- SUBVIEW 2: TRICKS ACCORDION -->
+      <div id="subview-tricks" style="display: none;">
+        <div class="card" style="margin-bottom: 14px;">
+          <div class="card-title">🔍 База уловок маркетологов</div>
+          <p style="font-size: 13px; color: var(--text-muted);">
+            Маркетплейсы тратят миллиарды рублей на тестирование уловок, заставляющих тебя покупать.
+            Вот ключевые приёмы и способы их нейтрализации:
+          </p>
+        </div>
+
+        <div class="accordion-list">
+          <!-- Trick 1 -->
+          <div class="accordion-item" onclick="toggleAccordion(this)">
+            <div class="accordion-header">
+              <div class="accordion-title-wrap">
+                <span class="accordion-icon">⚓</span>
+                <span class="accordion-title">Эффект якоря (Anchoring)</span>
+              </div>
+              <span class="accordion-arrow">▼</span>
+            </div>
+            <div class="accordion-content">
+              <span class="trick-tag">Wildberries / Ozon</span>
+              <div class="trick-sec">
+                <strong>Как устроена механика:</strong>
+                Мозг цепляется за первую увиденную цифру. Зачеркнутая цена 28 000 ₽ рядом с 4 500 ₽ создаёт иллюзию подарка судьбы — хотя по 28 000 ₽ эту куртку никто не продавал.
+              </div>
+              <div class="trick-shield">
+                🛡 <strong>Как не вестись:</strong> Закрой пальцем зачёркнутую цену. Спроси себя: купил бы я это за 4 500 ₽, если бы старой цифры не было вовсе?
+              </div>
+            </div>
+          </div>
+
+          <!-- Trick 2 -->
+          <div class="accordion-item" onclick="toggleAccordion(this)">
+            <div class="accordion-header">
+              <div class="accordion-title-wrap">
+                <span class="accordion-icon">💳</span>
+                <span class="accordion-title">Анестезия платежа (Сплит, Долями)</span>
+              </div>
+              <span class="accordion-arrow">▼</span>
+            </div>
+            <div class="accordion-content">
+              <span class="trick-tag">Яндекс Сплит / Долями / Кредитки</span>
+              <div class="trick-sec">
+                <strong>Как устроена механика:</strong>
+                Боль от расставания с деньгами пропорциональна тому, насколько физически ты ощущаешь платеж. «4 платежа по 2 990 ₽» мозг считывает как мелкий расход, хотя чек составляет 11 960 ₽.
+              </div>
+              <div class="trick-shield">
+                🛡 <strong>Как не вестись:</strong> Тест наличными. Готов ли ты прямо сейчас дойти до банкомата, снять полную сумму и отдать её купюрами? Если нет — ты не можешь себе это позволить.
+              </div>
+            </div>
+          </div>
+
+          <!-- Trick 3 -->
+          <div class="accordion-item" onclick="toggleAccordion(this)">
+            <div class="accordion-header">
+              <div class="accordion-title-wrap">
+                <span class="accordion-icon">🪤</span>
+                <span class="accordion-title">Эффект приманки (Decoy Effect)</span>
+              </div>
+              <span class="accordion-arrow">▼</span>
+            </div>
+            <div class="accordion-content">
+              <span class="trick-tag">Кофейни / Кинотеатры / Подписки</span>
+              <div class="trick-sec">
+                <strong>Как устроена механика:</strong>
+                В меню вводят средний вариант (кофе 350 мл за 320 ₽), чтобы большой (450 мл за 350 ₽) казался очевидной халявой на фоне маленького (250 мл за 190 ₽). Средний вариант почти никто не берёт — его задача продать большой.
+              </div>
+              <div class="trick-shield">
+                🛡 <strong>Как не вестись:</strong> Выбирай исходя из реальной потребности, а не из «выгодной разницы». Если тебе нужен маленький кофе — бери маленький.
+              </div>
+            </div>
+          </div>
+
+          <!-- Trick 4 -->
+          <div class="accordion-item" onclick="toggleAccordion(this)">
+            <div class="accordion-header">
+              <div class="accordion-title-wrap">
+                <span class="accordion-icon">😰</span>
+                <span class="accordion-title">Неприятие потери и FOMO</span>
+              </div>
+              <span class="accordion-arrow">▼</span>
+            </div>
+            <div class="accordion-content">
+              <span class="trick-tag">Таймеры акций / Авиабилеты</span>
+              <div class="trick-sec">
+                <strong>Как устроена механика:</strong>
+                Боль от потери в 2 раза острее радости от приобретения. Фраза «Остался 1 номер в отеле» или «Скидка сгорит через 01:59» активирует панику и отключает критическое мышление.
+              </div>
+              <div class="trick-shield">
+                🛡 <strong>Как не вестись:</strong> Искусственный дефицит на сайтах в 95% случаев генерируется скриптом. Обнови страницу в режиме инкогнито и увидишь тот же «последний номер».
+              </div>
+            </div>
+          </div>
+
+          <!-- Trick 5 -->
+          <div class="accordion-item" onclick="toggleAccordion(this)">
+            <div class="accordion-header">
+              <div class="accordion-title-wrap">
+                <span class="accordion-icon">🪦</span>
+                <span class="accordion-title">Ловушка невозвратных издержек</span>
+              </div>
+              <span class="accordion-arrow">▼</span>
+            </div>
+            <div class="accordion-content">
+              <span class="trick-tag">Онлайн-курсы / Абонементы / Ремонт</span>
+              <div class="trick-sec">
+                <strong>Как устроена механика:</strong>
+                «Я уже отдал 15 000 ₽ за курс, надо смотреть до конца, хоть и тошнит». Человек сливает драгоценное время жизни, пытаясь «спасти» уже потерянные деньги.
+              </div>
+              <div class="trick-shield">
+                🛡 <strong>Как не вестись:</strong> Прошлые расходы — невозвратны. Единственный разумный вопрос: «Какое действие принесет мне максимальную пользу начиная с этой секунды?»
+              </div>
+            </div>
+          </div>
+
+          <!-- Trick 6 -->
+          <div class="accordion-item" onclick="toggleAccordion(this)">
+            <div class="accordion-header">
+              <div class="accordion-title-wrap">
+                <span class="accordion-icon">🚚</span>
+                <span class="accordion-title">Иллюзия бесплатной доставки</span>
+              </div>
+              <span class="accordion-arrow">▼</span>
+            </div>
+            <div class="accordion-content">
+              <span class="trick-tag">Доставка еды / Маркетплейсы</span>
+              <div class="trick-sec">
+                <strong>Как устроена механика:</strong>
+                Доставка стоит 199 ₽. Чтобы сделать её «бесплатной», сервис предлагает добить корзину ещё на 450 ₽. В итоге ты тратишь лишние 251 ₽ на ненужную ерунду.
+              </div>
+              <div class="trick-shield">
+                🛡 <strong>Как не вестись:</strong> Если корзина не добивается тем, что ты и так планировал купить завтра — просто оплати доставку. Это в 2 раза дешевле.
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </section>
 
-    <!-- ───────────────────────────────────────────────────────────── -->
-    <!-- TAB 4: TRICKS DETECTOR -->
-    <!-- ───────────────────────────────────────────────────────────── -->
-    <section id="tab-tricks" class="tab-view">
-      <div class="card" style="margin-bottom: 14px;">
-        <div class="card-title">🔍 База уловок маркетологов</div>
-        <p style="font-size: 13px; color: var(--text-muted);">
-          Маркетплейсы тратят миллиарды рублей на тестирование уловок, заставляющих тебя покупать.
-          Вот ключевые приёмы и способы их нейтрализации:
-        </p>
-      </div>
-
-      <div class="accordion-list">
-
-        <!-- Trick 1 -->
-        <div class="accordion-item" onclick="toggleAccordion(this)">
-          <div class="accordion-header">
-            <div class="accordion-title-wrap">
-              <span class="accordion-icon">⚓</span>
-              <span class="accordion-title">Эффект якоря (Anchoring)</span>
-            </div>
-            <span class="accordion-arrow">▼</span>
-          </div>
-          <div class="accordion-content">
-            <span class="trick-tag">Wildberries / Ozon</span>
-            <div class="trick-sec">
-              <strong>Как устроена механика:</strong>
-              Мозг цепляется за первую увиденную цифру. Зачеркнутая цена 28 000 ₽ рядом с 4 500 ₽ создаёт иллюзию подарка судьбы — хотя по 28 000 ₽ эту куртку никто не продавал.
-            </div>
-            <div class="trick-sec">
-              <strong>Где встречается:</strong>
-              «Распродажи», ценники со старой ценой на маркетплейсах, скидки до 90%.
-            </div>
-            <div class="trick-shield">
-              🛡 <strong>Как не вестись:</strong> Закрой пальцем зачёркнутую цену. Спроси себя: купил бы я это за 4 500 ₽, если бы старой цифры не было вовсе?
-            </div>
-          </div>
-        </div>
-
-        <!-- Trick 2 -->
-        <div class="accordion-item" onclick="toggleAccordion(this)">
-          <div class="accordion-header">
-            <div class="accordion-title-wrap">
-              <span class="accordion-icon">💳</span>
-              <span class="accordion-title">Анестезия платежа (Сплит, Долями)</span>
-            </div>
-            <span class="accordion-arrow">▼</span>
-          </div>
-          <div class="accordion-content">
-            <span class="trick-tag">Яндекс Сплит / Долями / Кредитки</span>
-            <div class="trick-sec">
-              <strong>Как устроена механика:</strong>
-              Боль от расставания с деньгами пропорциональна тому, насколько физически ты ощущаешь платеж. «4 платежа по 2 990 ₽» мозг считывает как мелкий расход, хотя чек составляет 11 960 ₽.
-            </div>
-            <div class="trick-shield">
-              🛡 <strong>Как не вестись:</strong> Тест наличными. Готов ли ты прямо сейчас дойти до банкомата, снять полную сумму и отдать её купюрами? Если нет — ты не можешь себе это позволить.
-            </div>
-          </div>
-        </div>
-
-        <!-- Trick 3 -->
-        <div class="accordion-item" onclick="toggleAccordion(this)">
-          <div class="accordion-header">
-            <div class="accordion-title-wrap">
-              <span class="accordion-icon">🪤</span>
-              <span class="accordion-title">Эффект приманки (Decoy Effect)</span>
-            </div>
-            <span class="accordion-arrow">▼</span>
-          </div>
-          <div class="accordion-content">
-            <span class="trick-tag">Кофейни / Кинотеатры / Подписки</span>
-            <div class="trick-sec">
-              <strong>Как устроена механика:</strong>
-              В меню вводят средний вариант (кофе 350 мл за 320 ₽), чтобы большой (450 мл за 350 ₽) казался очевидной халявой на фоне маленького (250 мл за 190 ₽). Средний вариант почти никто не берёт — его задача продать большой.
-            </div>
-            <div class="trick-shield">
-              🛡 <strong>Как не вестись:</strong> Выбирай исходя из реальной потребности, а не из «выгодной разницы». Если тебе нужен маленький кофе — бери маленький.
-            </div>
-          </div>
-        </div>
-
-        <!-- Trick 4 -->
-        <div class="accordion-item" onclick="toggleAccordion(this)">
-          <div class="accordion-header">
-            <div class="accordion-title-wrap">
-              <span class="accordion-icon">😰</span>
-              <span class="accordion-title">Неприятие потери и FOMO</span>
-            </div>
-            <span class="accordion-arrow">▼</span>
-          </div>
-          <div class="accordion-content">
-            <span class="trick-tag">Таймеры акций / Авиабилеты</span>
-            <div class="trick-sec">
-              <strong>Как устроена механика:</strong>
-              Боль от потери в 2 раза острее радости от приобретения. Фраза «Остался 1 номер в отеле» или «Скидка сгорит через 01:59» активирует панику и отключает критическое мышление.
-            </div>
-            <div class="trick-shield">
-              🛡 <strong>Как не вестись:</strong> Искусственный дефицит на сайтах в 95% случаев генерируется скриптом. Обнови страницу в режиме инкогнито и увидишь тот же «последний номер».
-            </div>
-          </div>
-        </div>
-
-        <!-- Trick 5 -->
-        <div class="accordion-item" onclick="toggleAccordion(this)">
-          <div class="accordion-header">
-            <div class="accordion-title-wrap">
-              <span class="accordion-icon">🪦</span>
-              <span class="accordion-title">Ловушка невозвратных издержек</span>
-            </div>
-            <span class="accordion-arrow">▼</span>
-          </div>
-          <div class="accordion-content">
-            <span class="trick-tag">Онлайн-курсы / Абонементы / Ремонт</span>
-            <div class="trick-sec">
-              <strong>Как устроена механика:</strong>
-              «Я уже отдал 15 000 ₽ за курс, надо смотреть до конца, хоть и тошнит». Человек сливает драгоценное время жизни, пытаясь «спасти» уже потерянные деньги.
-            </div>
-            <div class="trick-shield">
-              🛡 <strong>Как не вестись:</strong> Прошлые расходы — невозвратны. Единственный разумный вопрос: «Какое действие принесет мне максимальную пользу начиная с этой секунды?»
-            </div>
-          </div>
-        </div>
-
-        <!-- Trick 6 -->
-        <div class="accordion-item" onclick="toggleAccordion(this)">
-          <div class="accordion-header">
-            <div class="accordion-title-wrap">
-              <span class="accordion-icon">🚚</span>
-              <span class="accordion-title">Иллюзия бесплатной доставки</span>
-            </div>
-            <span class="accordion-arrow">▼</span>
-          </div>
-          <div class="accordion-content">
-            <span class="trick-tag">Доставка еды / Маркетплейсы</span>
-            <div class="trick-sec">
-              <strong>Как устроена механика:</strong>
-              Доставка стоит 199 ₽. Чтобы сделать её «бесплатной», сервис предлагает добить корзину ещё на 450 ₽. В итоге ты тратишь лишние 251 ₽ на ненужную ерунду.
-            </div>
-            <div class="trick-shield">
-              🛡 <strong>Как не вестись:</strong> Если корзина не добивается тем, что ты и так планировал купить завтра — просто оплати доставку. Это в 2 раза дешевле.
-            </div>
-          </div>
-        </div>
-
-      </div>
     </section>
 
   </main>
 
-  <!-- Bottom Navigation Bar -->
+  <!-- Bottom Navigation Bar (3 TABS) -->
   <nav class="bottom-nav">
     <button class="nav-item active" onclick="switchTab('tab-scanner')">
       <span class="nav-icon">🛡</span>
@@ -1782,13 +1934,9 @@
       <span class="nav-icon">💰</span>
       <span>Сохранено</span>
     </button>
-    <button class="nav-item" onclick="switchTab('tab-quiz')">
+    <button class="nav-item" onclick="switchTab('tab-knowledge')">
       <span class="nav-icon">🧠</span>
-      <span>Тренажер</span>
-    </button>
-    <button class="nav-item" onclick="switchTab('tab-tricks')">
-      <span class="nav-icon">🔍</span>
-      <span>Уловки</span>
+      <span>База знаний</span>
     </button>
   </nav>
 
@@ -1796,6 +1944,23 @@
   <div class="toast" id="appToast">
     <span>✅</span>
     <span id="toastMsg">Успешно!</span>
+  </div>
+
+  <!-- ONBOARDING MODAL OVERLAY -->
+  <div class="onboarding-overlay" id="onboardingOverlay">
+    <div class="onboarding-card">
+      <button class="onboarding-skip-btn" onclick="finishOnboarding()">Пропустить</button>
+      <div class="onboarding-icon-wrap" id="onboardingIcon">🛡</div>
+      <div class="onboarding-step-badge" id="onboardingStepBadge">Шаг 1 из 3</div>
+      <div class="onboarding-title" id="onboardingTitle">Радар Покупок</div>
+      <div class="onboarding-desc" id="onboardingDesc">Переводим рубли в реальные часы твоей жизни и разоблачаем фейковые акции и манипуляции маркетологов.</div>
+      <div class="onboarding-dots" id="onboardingDots">
+        <span class="onboarding-dot active"></span>
+        <span class="onboarding-dot"></span>
+        <span class="onboarding-dot"></span>
+      </div>
+      <button class="onboarding-main-btn" id="onboardingMainBtn" onclick="nextOnboardingStep()">Далее ➔</button>
+    </div>
   </div>
 
   <!-- Application Logic -->
@@ -1831,7 +1996,7 @@
     }
 
     // ─────────────────────────────────────────────────────────────
-    // MOBILE KEYBOARD AUTO-DISMISS UX
+    // 1. MOBILE KEYBOARD AUTO-DISMISS UX
     // ─────────────────────────────────────────────────────────────
     function dismissKeyboard() {
       if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
@@ -1839,7 +2004,6 @@
       }
     }
 
-    // 1. Dismiss on tap/click outside active input
     document.addEventListener('touchstart', (e) => {
       if (document.activeElement && document.activeElement.tagName === 'INPUT') {
         if (e.target !== document.activeElement) {
@@ -1856,7 +2020,6 @@
       }
     });
 
-    // 2. Dismiss on scroll or touch move
     window.addEventListener('scroll', () => {
       if (document.activeElement && document.activeElement.tagName === 'INPUT') {
         document.activeElement.blur();
@@ -1869,7 +2032,6 @@
       }
     }, { passive: true });
 
-    // 3. Dismiss on Enter / Done on virtual keyboard
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         if (document.activeElement && document.activeElement.tagName === 'INPUT') {
@@ -1879,7 +2041,9 @@
       }
     });
 
-    // Tab Navigation
+    // ─────────────────────────────────────────────────────────────
+    // 2. TAB NAVIGATION (3 TABS)
+    // ─────────────────────────────────────────────────────────────
     function switchTab(tabId) {
       dismissKeyboard();
       haptic('light');
@@ -1889,7 +2053,7 @@
       const target = document.getElementById(tabId);
       if (target) target.classList.add('active');
 
-      const tabs = ['tab-scanner', 'tab-saved', 'tab-quiz', 'tab-tricks'];
+      const tabs = ['tab-scanner', 'tab-saved', 'tab-knowledge'];
       const idx = tabs.indexOf(tabId);
       if (idx !== -1) {
         document.querySelectorAll('.nav-item')[idx].classList.add('active');
@@ -1902,8 +2066,21 @@
       }
     }
 
+    // Knowledge Sub-tabs
+    let currentKnowledgeSub = 'quiz';
+    function switchKnowledgeTab(sub) {
+      dismissKeyboard();
+      haptic('medium');
+      currentKnowledgeSub = sub;
+      const isQuiz = sub === 'quiz';
+      document.getElementById('btnSubQuiz').classList.toggle('active', isQuiz);
+      document.getElementById('btnSubTricks').classList.toggle('active', !isQuiz);
+      document.getElementById('subview-quiz').style.display = isQuiz ? 'block' : 'none';
+      document.getElementById('subview-tricks').style.display = isQuiz ? 'none' : 'block';
+    }
+
     // ─────────────────────────────────────────────────────────────
-    // 1. WHAT ARE YOU BUYING? (CATEGORY & NAME)
+    // 3. ITEM NAME & CATEGORIES
     // ─────────────────────────────────────────────────────────────
     let selectedCategory = '';
     const itemNameInput = document.getElementById('itemNameInput');
@@ -1948,7 +2125,7 @@
     }
 
     // ─────────────────────────────────────────────────────────────
-    // 2. DUAL INPUTS (PRICE & INCOME: KEYBOARD + SLIDERS)
+    // 4. SCANNER & DUAL INPUTS (PRICE & INCOME: NO PERSISTENCE OF INCOME)
     // ─────────────────────────────────────────────────────────────
     let incomeMode = 'salary'; // 'salary', 'budget', 'none'
 
@@ -1986,7 +2163,6 @@
       recalcScanner();
     }
 
-    // Bi-directional price handling
     priceSlider.addEventListener('input', () => {
       priceInput.value = priceSlider.value;
       recalcScanner();
@@ -2023,7 +2199,6 @@
       recalcScanner();
     }
 
-    // Bi-directional income handling
     incomeSlider.addEventListener('input', () => {
       incomeInput.value = incomeSlider.value;
       recalcScanner();
@@ -2039,9 +2214,6 @@
       recalcScanner();
     });
 
-    // ─────────────────────────────────────────────────────────────
-    // 3. SCANNER CALCULATIONS (SNICKERS, HOURS, VERDICTS)
-    // ─────────────────────────────────────────────────────────────
     function recalcScanner() {
       const price = parseFloat(priceInput.value) || 0;
       const income = parseFloat(incomeInput.value) || 1;
@@ -2077,11 +2249,12 @@
     }
 
     // ─────────────────────────────────────────────────────────────
-    // 4. 6 TRAPS CHECKER & SPEEDOMETER
+    // 5. 6 TRAPS CHECKER & SPEEDOMETER
     // ─────────────────────────────────────────────────────────────
     const TRAP_WEIGHTS = [25, 25, 20, 20, 15, 15];
 
     function toggleTrap(idx) {
+      dismissKeyboard();
       haptic('light');
       const chk = document.getElementById('trap' + idx);
       chk.checked = !chk.checked;
@@ -2127,7 +2300,7 @@
     }
 
     // ─────────────────────────────────────────────────────────────
-    // 5. STORAGE: SAVED MONEY & FROZEN ITEMS (24H)
+    // 6. STORAGE: SAVED MONEY (NO SNICKERS) & FROZEN (24H)
     // ─────────────────────────────────────────────────────────────
     function getSavedData() {
       try {
@@ -2167,10 +2340,12 @@
       return 0;
     }
 
-    // Action 1: Cancel purchase -> Saved Money
+    // Quick save (works immediately if price > 0, even without checked traps)
     function saveToSavedPurchases() {
+      dismissKeyboard();
       const price = parseFloat(priceInput.value) || 0;
       if (price <= 0) {
+        haptic('warning');
         showToast('Введите цену покупки больше 0 ₽');
         return;
       }
@@ -2196,10 +2371,12 @@
       updateHeaderBadge();
     }
 
-    // Action 2: Freeze purchase for 24h
+    // Quick freeze for 24h
     function freezePurchase24h() {
+      dismissKeyboard();
       const price = parseFloat(priceInput.value) || 0;
       if (price <= 0) {
+        haptic('warning');
         showToast('Введите цену покупки больше 0 ₽');
         return;
       }
@@ -2233,11 +2410,9 @@
 
       const totalRub = items.reduce((acc, it) => acc + (it.price || 0), 0);
       const totalHours = items.reduce((acc, it) => acc + (it.hours || 0), 0);
-      const totalSnickers = Math.round(totalRub / 85);
 
       document.getElementById('totalSavedRub').innerText = fmt(totalRub) + ' ₽';
-      document.getElementById('totalSavedHours').innerText = `${totalHours.toFixed(1)} ч`;
-      document.getElementById('totalSavedSnickers').innerText = `${fmt(totalSnickers)} шт`;
+      document.getElementById('totalSavedHours').innerText = `${totalHours.toFixed(1)} часов труда сохранено`;
 
       // Render Frozen Section
       const frozenSection = document.getElementById('frozenSection');
@@ -2357,7 +2532,7 @@
     }
 
     // ─────────────────────────────────────────────────────────────
-    // 6. QUIZ (10 LIFE CASES WITH RANDOMIZED & SHUFFLED OPTIONS)
+    // 7. QUIZ (10 LIFE CASES WITH RANDOMIZED & SHUFFLED OPTIONS)
     // ─────────────────────────────────────────────────────────────
     const QUIZ_RAW_DATA = [
       {
@@ -2467,7 +2642,6 @@
     let answered = false;
     let currentShuffledOptions = [];
 
-    // Shuffle options so correct answer position (А, Б, В) is completely randomized
     function shuffleAnswers(qRaw) {
       const all = [
         { text: qRaw.correctText, isCorrect: true },
@@ -2523,7 +2697,6 @@
       } else {
         haptic('warning');
         buttons[chosenIdx].classList.add('wrong');
-        // Highlight correct button
         currentShuffledOptions.forEach((opt, idx) => {
           if (opt.isCorrect) buttons[idx].classList.add('correct');
         });
@@ -2589,7 +2762,7 @@
     }
 
     // ─────────────────────────────────────────────────────────────
-    // 7. TRICKS ACCORDION
+    // 8. TRICKS ACCORDION
     // ─────────────────────────────────────────────────────────────
     function toggleAccordion(el) {
       haptic('light');
@@ -2600,15 +2773,87 @@
       }
     }
 
-    // Initialize on load
+    // ─────────────────────────────────────────────────────────────
+    // 9. ONBOARDING (ONE-TIME OR MANUAL MODAL)
+    // ─────────────────────────────────────────────────────────────
+    const ONBOARDING_STEPS = [
+      {
+        icon: "🛡",
+        title: "Радар Покупок",
+        desc: "Переводим рубли в реальные часы твоей жизни и разоблачаем фейковые акции и манипуляции маркетологов.",
+        btnText: "Далее ➔"
+      },
+      {
+        icon: "⚡️",
+        title: "Быстрая проверка",
+        desc: "Введи цену товара, отметь красные флаги маркетинга или сразу жми «Отказываюсь», чтобы сохранить деньги.",
+        btnText: "Далее ➔"
+      },
+      {
+        icon: "💰",
+        title: "Сохраняй и прокачивайся",
+        desc: "Копи спасенные суммы и тренируй финансовый иммунитет к уловкам на реальных кейсах.",
+        btnText: "🚀 Начать!"
+      }
+    ];
+
+    let currentOnboardingStep = 0;
+
+    function checkOnboarding() {
+      const seen = localStorage.getItem('radar_onboarding_v1');
+      if (!seen) {
+        openOnboarding(false);
+      }
+    }
+
+    function openOnboarding(manual = false) {
+      if (manual) haptic('medium');
+      currentOnboardingStep = 0;
+      renderOnboardingStep();
+      document.getElementById('onboardingOverlay').classList.add('open');
+    }
+
+    function renderOnboardingStep() {
+      const step = ONBOARDING_STEPS[currentOnboardingStep];
+      document.getElementById('onboardingIcon').innerText = step.icon;
+      document.getElementById('onboardingStepBadge').innerText = `Шаг ${currentOnboardingStep + 1} из 3`;
+      document.getElementById('onboardingTitle').innerText = step.title;
+      document.getElementById('onboardingDesc').innerText = step.desc;
+      document.getElementById('onboardingMainBtn').innerText = step.btnText;
+
+      const dots = document.querySelectorAll('.onboarding-dot');
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentOnboardingStep);
+      });
+    }
+
+    function nextOnboardingStep() {
+      haptic('light');
+      if (currentOnboardingStep < ONBOARDING_STEPS.length - 1) {
+        currentOnboardingStep++;
+        renderOnboardingStep();
+      } else {
+        finishOnboarding();
+      }
+    }
+
+    function finishOnboarding() {
+      haptic('success');
+      localStorage.setItem('radar_onboarding_v1', 'true');
+      document.getElementById('onboardingOverlay').classList.remove('open');
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // 10. INITIALIZATION
+    // ─────────────────────────────────────────────────────────────
     window.addEventListener('DOMContentLoaded', () => {
-      // 4. Dismiss keyboard on touching range sliders or clicking chips/controls
+      // Dismiss keyboard on touching range sliders or clicking controls
       document.querySelectorAll('input[type="range"]').forEach(slider => {
         slider.addEventListener('touchstart', dismissKeyboard, { passive: true });
         slider.addEventListener('pointerdown', dismissKeyboard);
         slider.addEventListener('mousedown', dismissKeyboard);
       });
-      document.querySelectorAll('.quick-chip, .cat-tag, .chip-btn, .nav-item, .trap-card, .btn-save, .btn-freeze').forEach(el => {
+      document.querySelectorAll('.quick-chip, .cat-tag, .chip-btn, .nav-item, .trap-card, .btn-save, .btn-freeze, .help-btn').forEach(el => {
         el.addEventListener('touchstart', dismissKeyboard, { passive: true });
         el.addEventListener('click', dismissKeyboard);
       });
@@ -2616,6 +2861,7 @@
       recalcScanner();
       updateHeaderBadge();
       renderQuestion();
+      checkOnboarding();
     });
   </script>
 </body>
