@@ -71,7 +71,7 @@
       -webkit-backdrop-filter: blur(20px);
       background: rgba(12, 14, 20, 0.85);
       border-bottom: 1px solid var(--border-glass);
-      padding: 12px 18px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -80,57 +80,87 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      min-width: 0;
+      flex: 1;
     }
 
     .brand-icon {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: var(--radius-sm);
       background: linear-gradient(135deg, #10b981, #8b5cf6);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 19px;
+      font-size: 18px;
+      flex-shrink: 0;
       box-shadow: 0 0 15px var(--accent-emerald-glow);
     }
 
+    .brand-text {
+      min-width: 0;
+      overflow: hidden;
+    }
+
     .brand-text h1 {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 800;
       letter-spacing: -0.2px;
       background: linear-gradient(90deg, #fff, #cbd5e1);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .brand-text p {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--accent-emerald);
       font-weight: 600;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
       text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .header-right {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      flex-shrink: 0;
+      margin-left: 8px;
+      white-space: nowrap;
     }
 
     .savings-badge {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       background: rgba(16, 185, 129, 0.12);
       border: 1px solid rgba(16, 185, 129, 0.25);
-      padding: 6px 12px;
+      padding: 6px 11px;
       border-radius: var(--radius-pill);
       font-size: 12px;
       font-weight: 700;
       color: var(--accent-emerald);
       cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
       transition: all 0.2s ease;
+    }
+
+    .savings-badge span {
+      white-space: nowrap;
+      display: inline-block;
+    }
+
+    #headerSavingsVal {
+      font-family: 'JetBrains Mono', monospace;
+      white-space: nowrap;
+      font-weight: 700;
     }
 
     .savings-badge:active {
@@ -138,13 +168,14 @@
     }
 
     .help-btn {
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
       border-radius: var(--radius-pill);
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border-glass);
       color: var(--text-muted);
-      font-size: 14px;
+      font-size: 13px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -797,6 +828,7 @@
       letter-spacing: -1px;
       text-shadow: 0 0 24px var(--accent-emerald-glow);
       margin-bottom: 12px;
+      white-space: nowrap;
     }
 
     .saved-hours-pill {
@@ -810,6 +842,7 @@
       font-size: 13px;
       font-weight: 700;
       color: var(--accent-emerald);
+      white-space: nowrap;
     }
 
     /* Frozen items block */
@@ -1494,10 +1527,7 @@
       </div>
     </div>
     <div class="header-right">
-      <div class="savings-badge" onclick="switchTab('tab-saved')">
-        <span>💰</span>
-        <span id="headerSavingsVal">0 ₽</span>
-      </div>
+      <div class="savings-badge" onclick="switchTab('tab-saved')"><span>💰</span><span id="headerSavingsVal">0 ₽</span></div>
       <button class="help-btn" onclick="openOnboarding(true)" title="Обучение">❓</button>
     </div>
   </header>
