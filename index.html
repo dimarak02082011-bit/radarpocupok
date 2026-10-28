@@ -1974,11 +1974,14 @@
 
     function haptic(type = 'light') {
       try {
-        if (tg?.HapticFeedback) {
-          if (type === 'light' || type === 'medium' || type === 'heavy') {
-            tg.HapticFeedback.impactOccurred(type);
+        const hf = window.Telegram?.WebApp?.HapticFeedback;
+        if (hf) {
+          if (type === 'selection') {
+            hf.selectionChanged();
+          } else if (type === 'light' || type === 'medium' || type === 'heavy') {
+            hf.impactOccurred(type);
           } else if (type === 'success' || type === 'warning' || type === 'error') {
-            tg.HapticFeedback.notificationOccurred(type);
+            hf.notificationOccurred(type);
           }
         }
       } catch (e) {}
@@ -2101,19 +2104,24 @@
 
     function selectCategoryTag(btn, catName) {
       dismissKeyboard();
-      haptic('light');
+      if (window.Telegram?.WebApp?.HapticFeedback) {
+        try { Telegram.WebApp.HapticFeedback.impactOccurred('light'); } catch (e) {}
+      } else {
+        haptic('light');
+      }
+
       const wasActive = btn.classList.contains('active');
       document.querySelectorAll('.cat-tag').forEach(t => t.classList.remove('active'));
 
       if (wasActive) {
         selectedCategory = '';
+        itemNameInput.value = '';
+        clearItemBtn.classList.remove('visible');
       } else {
         btn.classList.add('active');
         selectedCategory = catName;
-        if (!itemNameInput.value.trim()) {
-          itemNameInput.value = catName;
-          clearItemBtn.classList.add('visible');
-        }
+        itemNameInput.value = catName;
+        clearItemBtn.classList.add('visible');
       }
     }
 
@@ -2165,6 +2173,9 @@
 
     priceSlider.addEventListener('input', () => {
       priceInput.value = priceSlider.value;
+      if (window.Telegram?.WebApp?.HapticFeedback) {
+        try { Telegram.WebApp.HapticFeedback.selectionChanged(); } catch (e) {}
+      }
       recalcScanner();
     });
 
@@ -2180,7 +2191,11 @@
 
     function addPrice(delta) {
       dismissKeyboard();
-      haptic('light');
+      if (window.Telegram?.WebApp?.HapticFeedback) {
+        try { Telegram.WebApp.HapticFeedback.impactOccurred('light'); } catch (e) {}
+      } else {
+        haptic('light');
+      }
       let current = parseFloat(priceInput.value) || 0;
       current += delta;
       priceInput.value = current;
@@ -2193,7 +2208,11 @@
 
     function resetPrice() {
       dismissKeyboard();
-      haptic('medium');
+      if (window.Telegram?.WebApp?.HapticFeedback) {
+        try { Telegram.WebApp.HapticFeedback.impactOccurred('medium'); } catch (e) {}
+      } else {
+        haptic('medium');
+      }
       priceInput.value = 0;
       priceSlider.value = 0;
       recalcScanner();
@@ -2201,6 +2220,9 @@
 
     incomeSlider.addEventListener('input', () => {
       incomeInput.value = incomeSlider.value;
+      if (window.Telegram?.WebApp?.HapticFeedback) {
+        try { Telegram.WebApp.HapticFeedback.selectionChanged(); } catch (e) {}
+      }
       recalcScanner();
     });
 
@@ -2366,7 +2388,11 @@
       items.unshift(newItem);
       saveSavedData(items);
 
-      haptic('success');
+      if (window.Telegram?.WebApp?.HapticFeedback) {
+        try { Telegram.WebApp.HapticFeedback.notificationOccurred('success'); } catch (e) {}
+      } else {
+        haptic('success');
+      }
       showToast(`+${fmt(price)} ₽ сохранено! «${title}» 🛑`);
       updateHeaderBadge();
     }
@@ -2376,7 +2402,11 @@
       dismissKeyboard();
       const price = parseFloat(priceInput.value) || 0;
       if (price <= 0) {
-        haptic('warning');
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+          try { Telegram.WebApp.HapticFeedback.notificationOccurred('warning'); } catch (e) {}
+        } else {
+          haptic('warning');
+        }
         showToast('Введите цену покупки больше 0 ₽');
         return;
       }
@@ -2399,7 +2429,11 @@
       frozen.unshift(newItem);
       saveFrozenData(frozen);
 
-      haptic('success');
+      if (window.Telegram?.WebApp?.HapticFeedback) {
+        try { Telegram.WebApp.HapticFeedback.notificationOccurred('success'); } catch (e) {}
+      } else {
+        haptic('success');
+      }
       showToast(`🧊 «${title}» заморожен на 24 часа! Отдохни.`);
       updateHeaderBadge();
     }
