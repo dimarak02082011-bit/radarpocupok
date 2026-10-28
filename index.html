@@ -9,7 +9,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -28,6 +28,8 @@
       --accent-amber-glow: rgba(245, 158, 11, 0.25);
       --accent-rose: #f43f5e;
       --accent-rose-glow: rgba(244, 63, 94, 0.25);
+      --accent-ice: #38bdf8;
+      --accent-ice-glow: rgba(56, 189, 248, 0.25);
 
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
@@ -176,7 +178,7 @@
     }
 
     .card-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
@@ -223,16 +225,112 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
-    /* Inputs and Sliders */
+    /* 1. Item Name & Category Tags */
+    .item-name-card {
+      margin-bottom: 16px;
+    }
+
+    .item-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .styled-text-input {
+      width: 100%;
+      background: rgba(10, 13, 20, 0.75);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 12px 38px 12px 14px;
+      color: var(--text-main);
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      user-select: text;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .styled-text-input:focus {
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 12px var(--accent-purple-glow);
+    }
+
+    .styled-text-input::placeholder {
+      color: var(--text-dim);
+      font-size: 13px;
+    }
+
+    .clear-input-btn {
+      position: absolute;
+      right: 12px;
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 14px;
+      cursor: pointer;
+      padding: 4px;
+      display: none;
+      line-height: 1;
+    }
+
+    .clear-input-btn.visible {
+      display: block;
+    }
+
+    .category-tags-scroll {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .category-tags-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cat-tag {
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-pill);
+      padding: 6px 12px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .cat-tag:active {
+      transform: scale(0.95);
+    }
+
+    .cat-tag.active {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(16, 185, 129, 0.25));
+      color: #fff;
+      border-color: rgba(139, 92, 246, 0.5);
+      box-shadow: 0 0 12px rgba(139, 92, 246, 0.25);
+    }
+
+    /* 2. Dual Inputs: Keyboard + Sliders */
     .input-field-wrap {
       margin-bottom: 18px;
+    }
+
+    .input-field-wrap:last-child {
+      margin-bottom: 0;
     }
 
     .field-header {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 10px;
     }
 
     .field-label {
@@ -241,15 +339,47 @@
       color: var(--text-muted);
     }
 
-    .field-value-display {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-main);
-      background: rgba(255, 255, 255, 0.04);
-      padding: 4px 10px;
-      border-radius: var(--radius-sm);
+    .num-input-wrap {
+      display: flex;
+      align-items: center;
+      background: rgba(10, 13, 20, 0.85);
       border: 1px solid var(--border-glass);
+      border-radius: var(--radius-sm);
+      padding: 4px 10px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .num-input-wrap:focus-within {
+      border-color: var(--accent-emerald);
+      box-shadow: 0 0 10px var(--accent-emerald-glow);
+    }
+
+    .styled-num-input {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 17px;
+      font-weight: 700;
+      width: 105px;
+      text-align: right;
+      outline: none;
+      user-select: text;
+      -moz-appearance: textfield;
+    }
+
+    .styled-num-input::-webkit-outer-spin-button,
+    .styled-num-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .num-input-currency {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent-emerald);
+      margin-left: 4px;
     }
 
     .styled-slider {
@@ -277,6 +407,39 @@
 
     .styled-slider::-webkit-slider-thumb:active {
       transform: scale(1.18);
+    }
+
+    /* Quick Chips for Price */
+    .quick-chips-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .quick-chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-pill);
+      padding: 5px 11px;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .quick-chip:active {
+      transform: scale(0.95);
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      border-color: var(--accent-emerald);
+    }
+
+    .quick-chip.reset {
+      color: var(--accent-rose);
+      border-color: rgba(244, 63, 94, 0.25);
     }
 
     /* Live Impact Card */
@@ -349,16 +512,16 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Traps Toggle Switches */
+    /* 6 Traps Toggle Switches */
     .traps-section {
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .trap-card {
       background: rgba(20, 25, 36, 0.65);
       border: 1px solid var(--border-glass);
       border-radius: var(--radius-md);
-      padding: 13px 15px;
+      padding: 12px 14px;
       margin-bottom: 10px;
       display: flex;
       align-items: center;
@@ -388,7 +551,20 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
+      flex-wrap: wrap;
+    }
+
+    .trap-weight-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: var(--radius-pill);
+      background: rgba(244, 63, 94, 0.15);
+      color: var(--accent-rose);
+      border: 1px solid rgba(244, 63, 94, 0.25);
     }
 
     .trap-desc {
@@ -447,13 +623,13 @@
       background: linear-gradient(180deg, rgba(22, 28, 42, 0.8), rgba(14, 18, 28, 0.9));
       border: 1px solid var(--border-glass);
       border-radius: var(--radius-lg);
-      padding: 20px;
+      padding: 18px;
       text-align: center;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .meter-wrap {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .meter-bar-bg {
@@ -515,7 +691,13 @@
       font-size: 14px;
     }
 
-    /* Big Action Button */
+    /* Scanner Action Buttons */
+    .scanner-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
     .btn-save {
       width: 100%;
       background: linear-gradient(135deg, #10b981, #059669);
@@ -538,35 +720,178 @@
       transform: scale(0.97);
     }
 
-    /* TAB 2: PIGGY BANK */
-    .piggy-hero {
+    .btn-freeze {
+      width: 100%;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(14, 165, 233, 0.22));
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+      border-radius: var(--radius-md);
+      padding: 14px;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.12);
+    }
+
+    .btn-freeze:active {
+      transform: scale(0.97);
+    }
+
+    /* TAB 2: SAVED MONEY (СОХРАНЕННЫЕ ДЕНЬГИ) */
+    .saved-hero {
       background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(139, 92, 246, 0.15));
       border: 1px solid rgba(16, 185, 129, 0.3);
       border-radius: var(--radius-lg);
-      padding: 24px;
+      padding: 22px;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
-    .piggy-icon {
-      font-size: 44px;
-      margin-bottom: 8px;
+    .saved-hero-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
     }
 
-    .piggy-amount {
+    .saved-amount {
       font-family: 'JetBrains Mono', monospace;
       font-size: 36px;
       font-weight: 800;
       color: #fff;
       letter-spacing: -1px;
       text-shadow: 0 0 20px var(--accent-emerald-glow);
+      margin-bottom: 12px;
     }
 
-    .piggy-hours {
-      font-size: 13px;
+    .saved-substats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .saved-substat-box {
+      background: rgba(10, 13, 20, 0.5);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 8px 10px;
+    }
+
+    .saved-substat-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      font-weight: 700;
       color: var(--accent-emerald);
+    }
+
+    .saved-substat-label {
+      font-size: 10px;
+      color: var(--text-dim);
+      text-transform: uppercase;
       font-weight: 600;
-      margin-top: 4px;
+    }
+
+    /* Frozen items block */
+    .frozen-section {
+      margin-bottom: 20px;
+    }
+
+    .section-headline {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .frozen-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(12, 33, 56, 0.65));
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .frozen-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .frozen-item-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .frozen-item-cat {
+      font-size: 11px;
+      color: var(--accent-ice);
+      margin-top: 1px;
+    }
+
+    .frozen-item-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--accent-ice);
+    }
+
+    .frozen-timer-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius-pill);
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-ice);
+      margin-bottom: 10px;
+    }
+
+    .frozen-actions {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 8px;
+    }
+
+    .btn-frozen-save {
+      background: linear-gradient(135deg, #10b981, #059669);
+      border: none;
+      color: #fff;
+      border-radius: var(--radius-sm);
+      padding: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-frozen-bought {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-glass);
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      padding: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
     }
 
     .history-header {
@@ -605,7 +930,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-glass);
       border-radius: var(--radius-md);
-      padding: 12px 16px;
+      padding: 12px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -620,7 +945,7 @@
 
     .history-item-title {
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text-main);
     }
 
@@ -658,7 +983,7 @@
 
     .empty-state {
       text-align: center;
-      padding: 40px 20px;
+      padding: 36px 20px;
       color: var(--text-dim);
     }
 
@@ -668,7 +993,7 @@
       opacity: 0.6;
     }
 
-    /* TAB 3: QUIZ (10 QUESTIONS) */
+    /* TAB 3: QUIZ (10 QUESTIONS WITH SHUFFLE) */
     .quiz-progress-bar {
       height: 6px;
       background: #1c2233;
@@ -707,7 +1032,7 @@
     }
 
     .quiz-q-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--text-main);
       margin-bottom: 16px;
@@ -995,6 +1320,8 @@
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 200;
       box-shadow: 0 8px 24px var(--accent-emerald-glow);
+      max-width: 90%;
+      text-align: center;
     }
 
     .toast.show {
@@ -1014,7 +1341,7 @@
         <p>Умный фильтр спонтанных трат</p>
       </div>
     </div>
-    <div class="savings-badge" onclick="switchTab('tab-piggy')">
+    <div class="savings-badge" onclick="switchTab('tab-saved')">
       <span>💰</span>
       <span id="headerSavingsVal">0 ₽</span>
     </div>
@@ -1028,6 +1355,23 @@
     <!-- ───────────────────────────────────────────────────────────── -->
     <section id="tab-scanner" class="tab-view active">
 
+      <!-- Product name & Category chips -->
+      <div class="card item-name-card">
+        <div class="field-label" style="margin-bottom: 8px;">Что планируешь купить?</div>
+        <div class="item-input-wrap">
+          <input type="text" id="itemNameInput" class="styled-text-input" placeholder="Например: наушники, куртка, скин..." maxlength="60">
+          <button type="button" class="clear-input-btn" id="clearItemBtn" onclick="clearItemInput()" title="Очистить">✕</button>
+        </div>
+        <div class="category-tags-scroll">
+          <button type="button" class="cat-tag" onclick="selectCategoryTag(this, '👟 Одежда/Обувь')">👟 Одежда/Обувь</button>
+          <button type="button" class="cat-tag" onclick="selectCategoryTag(this, '🎧 Гаджеты')">🎧 Гаджеты</button>
+          <button type="button" class="cat-tag" onclick="selectCategoryTag(this, '🍔 Еда/Доставка')">🍔 Еда/Доставка</button>
+          <button type="button" class="cat-tag" onclick="selectCategoryTag(this, '🎮 Игры/Донат')">🎮 Игры/Донат</button>
+          <button type="button" class="cat-tag" onclick="selectCategoryTag(this, '🏠 Для дома')">🏠 Для дома</button>
+          <button type="button" class="cat-tag" onclick="selectCategoryTag(this, '📦 Маркетплейс')">📦 Маркетплейс</button>
+        </div>
+      </div>
+
       <!-- Budget Mode Segmented Chips -->
       <div class="chips-group">
         <button class="chip-btn active" onclick="setIncomeMode('salary')">💼 Зарплата</button>
@@ -1035,21 +1379,36 @@
         <button class="chip-btn" onclick="setIncomeMode('none')">⏭ Без дохода</button>
       </div>
 
-      <!-- Price Input & Range -->
+      <!-- Price & Income Dual Inputs -->
       <div class="card">
+        <!-- Price Input -->
         <div class="input-field-wrap">
           <div class="field-header">
-            <span class="field-label">Цена спонтанной покупки</span>
-            <span class="field-value-display" id="priceDisplay">5 000 ₽</span>
+            <span class="field-label">Цена покупки</span>
+            <div class="num-input-wrap">
+              <input type="number" inputmode="numeric" id="priceInput" class="styled-num-input" value="5000" min="0" step="100">
+              <span class="num-input-currency">₽</span>
+            </div>
           </div>
           <input type="range" class="styled-slider" id="priceSlider" min="500" max="150000" step="500" value="5000">
+
+          <!-- Quick price chips -->
+          <div class="quick-chips-row">
+            <button type="button" class="quick-chip" onclick="addPrice(500)">+500 ₽</button>
+            <button type="button" class="quick-chip" onclick="addPrice(1000)">+1 000 ₽</button>
+            <button type="button" class="quick-chip" onclick="addPrice(5000)">+5 000 ₽</button>
+            <button type="button" class="quick-chip reset" onclick="resetPrice()">Сброс</button>
+          </div>
         </div>
 
         <!-- Income or Budget Input -->
-        <div class="input-field-wrap" id="incomeInputWrap">
+        <div class="input-field-wrap" id="incomeInputWrap" style="margin-top: 18px;">
           <div class="field-header">
             <span class="field-label" id="incomeLabel">Чистый доход в месяц</span>
-            <span class="field-value-display" id="incomeDisplay">80 000 ₽</span>
+            <div class="num-input-wrap">
+              <input type="number" inputmode="numeric" id="incomeInput" class="styled-num-input" value="80000" min="0" step="1000">
+              <span class="num-input-currency">₽</span>
+            </div>
           </div>
           <input type="range" class="styled-slider" id="incomeSlider" min="10000" max="300000" step="5000" value="80000">
         </div>
@@ -1070,21 +1429,21 @@
         </div>
 
         <div class="equivalents-list" id="equivList">
-          <div class="eq-item">☕ Эквивалентно: <strong id="eqCoffee">28</strong> чашкам кофе в кофейне</div>
+          <div class="eq-item">🍫 Эквивалентно: <strong id="eqSnickers">59</strong> батончикам Snickers</div>
           <div class="eq-item">🌯 Или: <strong id="eqShawarma">19</strong> порциям шаурмы</div>
           <div class="eq-item">🎬 Или: <strong id="eqSubs">8</strong> месяцам стриминговых подписок</div>
         </div>
       </div>
 
-      <!-- 5 Cognitive Trap Checkers -->
+      <!-- 6 Cognitive Trap Checkers -->
       <div class="traps-section">
         <div class="card-title">🔍 Проверка на ловушки маркетологов</div>
 
         <!-- Trap 1 -->
         <div class="trap-card" onclick="toggleTrap(0)">
           <div class="trap-info">
-            <div class="trap-title">🎯 Нарисованная скидка</div>
-            <div class="trap-desc">Перечёркнутая цена или плашка «−80%» манят сильнее самой вещи.</div>
+            <div class="trap-title">🏷 Перечёркнутый ценник / Скидка &gt;40% <span class="trap-weight-badge">+25%</span></div>
+            <div class="trap-desc">Эффект якоря: мозг цепляется за нарисованную старую цену, которой в реальности не было.</div>
           </div>
           <label class="toggle-switch">
             <input type="checkbox" id="trap0" onchange="calcRisk()">
@@ -1095,8 +1454,8 @@
         <!-- Trap 2 -->
         <div class="trap-card" onclick="toggleTrap(1)">
           <div class="trap-info">
-            <div class="trap-title">💳 Анестезия платежа</div>
-            <div class="trap-desc">Сплитом/Долями кажется копейками, а отдать наличные было бы жалко.</div>
+            <div class="trap-title">💳 Оплата через Сплит / Долями / Кредитку <span class="trap-weight-badge">+25%</span></div>
+            <div class="trap-desc">Отключение боли платежа: мелкие доли притупляют ощущение реальной траты капитала.</div>
           </div>
           <label class="toggle-switch">
             <input type="checkbox" id="trap1" onchange="calcRisk()">
@@ -1107,8 +1466,8 @@
         <!-- Trap 3 -->
         <div class="trap-card" onclick="toggleTrap(2)">
           <div class="trap-info">
-            <div class="trap-title">⏰ Искусственный таймер</div>
-            <div class="trap-desc">Подгоняют фразами: «Осталась 1 шт.», «Скидка сгорит через 2 часа».</div>
+            <div class="trap-title">🔥 Плашка «Осталась 1 шт.» или таймер акции <span class="trap-weight-badge">+20%</span></div>
+            <div class="trap-desc">Искусственный дефицит FOMO: страх упустить скидку заставляет покупать без рассудка.</div>
           </div>
           <label class="toggle-switch">
             <input type="checkbox" id="trap2" onchange="calcRisk()">
@@ -1119,8 +1478,8 @@
         <!-- Trap 4 -->
         <div class="trap-card" onclick="toggleTrap(3)">
           <div class="trap-info">
-            <div class="trap-title">🌙 Ночной импульс</div>
-            <div class="trap-desc">Желание появилось только сегодня (в ленте, рекламе или ночной корзине).</div>
+            <div class="trap-title">🌙 Захотел спонтанно сегодня / Листаю ночью <span class="trap-weight-badge">+20%</span></div>
+            <div class="trap-desc">Быстрый дофамин: покупка как попытка снять усталость или скуку поздним вечером.</div>
           </div>
           <label class="toggle-switch">
             <input type="checkbox" id="trap3" onchange="calcRisk()">
@@ -1131,11 +1490,23 @@
         <!-- Trap 5 -->
         <div class="trap-card" onclick="toggleTrap(4)">
           <div class="trap-info">
-            <div class="trap-title">📦 Синдром пыльной полки</div>
-            <div class="trap-desc">Будем честны: через месяц вещь осядет в ящике без дела.</div>
+            <div class="trap-title">🚚 Беру за компанию ради бесплатной доставки / баллов <span class="trap-weight-badge">+15%</span></div>
+            <div class="trap-desc">Ловушка мнимой выгоды: тратишь лишние 500 ₽, чтобы «сэкономить» 200 ₽ на курьере.</div>
           </div>
           <label class="toggle-switch">
             <input type="checkbox" id="trap4" onchange="calcRisk()">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <!-- Trap 6 -->
+        <div class="trap-card" onclick="toggleTrap(5)">
+          <div class="trap-info">
+            <div class="trap-title">🔗 К этой вещи придется докупать что-то еще <span class="trap-weight-badge">+15%</span></div>
+            <div class="trap-desc">Эффект Дидро: вещь запустит цепную реакцию трат (чехлы, адаптеры, аксессуары).</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="trap5" onchange="calcRisk()">
             <span class="toggle-slider"></span>
           </label>
         </div>
@@ -1145,7 +1516,7 @@
       <div class="gauge-card">
         <div class="meter-wrap">
           <div class="meter-header">
-            <span class="meter-title">Индекс импульсивности</span>
+            <span class="meter-title">Уровень маркетингового давления</span>
             <span class="meter-pct" id="riskPct">0%</span>
           </div>
           <div class="meter-bar-bg">
@@ -1159,36 +1530,62 @@
         </div>
       </div>
 
-      <!-- Save Button -->
-      <button class="btn-save" onclick="saveToPiggyBank()">
-        <span>🛑</span>
-        <span id="saveBtnText">Передумал покупать! В копилку (+5 000 ₽)</span>
-      </button>
+      <!-- Action Buttons -->
+      <div class="scanner-actions">
+        <button class="btn-save" onclick="saveToSavedPurchases()">
+          <span>🛑</span>
+          <span id="saveBtnText">Отказываюсь от покупки! Сохранить +5 000 ₽</span>
+        </button>
+        <button class="btn-freeze" onclick="freezePurchase24h()">
+          <span>🧊</span>
+          <span>Заморозить покупку на 24 часа</span>
+        </button>
+      </div>
 
     </section>
 
     <!-- ───────────────────────────────────────────────────────────── -->
-    <!-- TAB 2: PIGGY BANK (SAVED MONEY) -->
+    <!-- TAB 2: SAVED MONEY (СОХРАНЕННЫЕ ДЕНЬГИ) -->
     <!-- ───────────────────────────────────────────────────────────── -->
-    <section id="tab-piggy" class="tab-view">
-      <div class="piggy-hero">
-        <div class="piggy-icon">💰</div>
-        <div class="piggy-amount" id="totalSavedRub">0 ₽</div>
-        <div class="piggy-hours" id="totalSavedHours">Спасенных часов жизни: 0 ч</div>
+    <section id="tab-saved" class="tab-view">
+      <div class="saved-hero">
+        <div class="saved-hero-title">💰 Сохраненные деньги</div>
+        <div class="saved-amount" id="totalSavedRub">0 ₽</div>
+        <div class="saved-substats">
+          <div class="saved-substat-box">
+            <div class="saved-substat-val" id="totalSavedHours">0.0 ч</div>
+            <div class="saved-substat-label">Часов жизни спасено</div>
+          </div>
+          <div class="saved-substat-box">
+            <div class="saved-substat-val" id="totalSavedSnickers">0 шт</div>
+            <div class="saved-substat-label">Батончиков Snickers</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cooling / Frozen Items (24h) -->
+      <div class="frozen-section" id="frozenSection" style="display: none;">
+        <div class="section-headline">
+          <span>🧊</span>
+          <span>На охлаждении (24 часа)</span>
+        </div>
+        <div id="frozenList">
+          <!-- Rendered via JS -->
+        </div>
       </div>
 
       <div class="history-header">
-        <span class="history-title">Отменённые покупки</span>
-        <button class="btn-clear" onclick="clearPiggyHistory()">Очистить всё</button>
+        <span class="history-title">История спасённых покупок</span>
+        <button class="btn-clear" onclick="clearSavedHistory()">Очистить всё</button>
       </div>
 
-      <div class="history-list" id="piggyList">
+      <div class="history-list" id="savedHistoryList">
         <!-- Rendered via JS -->
       </div>
     </section>
 
     <!-- ───────────────────────────────────────────────────────────── -->
-    <!-- TAB 3: QUIZ (10 LIFE CASES) -->
+    <!-- TAB 3: QUIZ (10 LIFE CASES - SHUFFLED) -->
     <!-- ───────────────────────────────────────────────────────────── -->
     <section id="tab-quiz" class="tab-view">
       <div class="quiz-progress-bar">
@@ -1231,7 +1628,7 @@
     <!-- ───────────────────────────────────────────────────────────── -->
     <section id="tab-tricks" class="tab-view">
       <div class="card" style="margin-bottom: 14px;">
-        <div class="card-title">🔍 Щит от маркетологов</div>
+        <div class="card-title">🔍 База уловок маркетологов</div>
         <p style="font-size: 13px; color: var(--text-muted);">
           Маркетплейсы тратят миллиарды рублей на тестирование уловок, заставляющих тебя покупать.
           Вот ключевые приёмы и способы их нейтрализации:
@@ -1253,14 +1650,14 @@
             <span class="trick-tag">Wildberries / Ozon</span>
             <div class="trick-sec">
               <strong>Как устроена механика:</strong>
-              Мозг цепляется за первую увиденную цифру. Зачеркнутая цена 28 000₽ рядом с 4 500₽ создаёт иллюзию подарка судьбы — хотя по 28 000₽ эту куртку никто не продавал.
+              Мозг цепляется за первую увиденную цифру. Зачеркнутая цена 28 000 ₽ рядом с 4 500 ₽ создаёт иллюзию подарка судьбы — хотя по 28 000 ₽ эту куртку никто не продавал.
             </div>
             <div class="trick-sec">
               <strong>Где встречается:</strong>
               «Распродажи», ценники со старой ценой на маркетплейсах, скидки до 90%.
             </div>
             <div class="trick-shield">
-              🛡 <strong>Как не вестись:</strong> Закрой пальцем зачёркнутую цену. Спроси себя: купил бы я это за 4 500₽, если бы старой цифры не было вовсе?
+              🛡 <strong>Как не вестись:</strong> Закрой пальцем зачёркнутую цену. Спроси себя: купил бы я это за 4 500 ₽, если бы старой цифры не было вовсе?
             </div>
           </div>
         </div>
@@ -1278,7 +1675,7 @@
             <span class="trick-tag">Яндекс Сплит / Долями / Кредитки</span>
             <div class="trick-sec">
               <strong>Как устроена механика:</strong>
-              Боль от расставания с деньгами пропорциональна тому, насколько физически ты ощущаешь платеж. «4 платежа по 2 990₽» мозг считывает как мелкий расход, хотя чек составляет 11 960₽.
+              Боль от расставания с деньгами пропорциональна тому, насколько физически ты ощущаешь платеж. «4 платежа по 2 990 ₽» мозг считывает как мелкий расход, хотя чек составляет 11 960 ₽.
             </div>
             <div class="trick-shield">
               🛡 <strong>Как не вестись:</strong> Тест наличными. Готов ли ты прямо сейчас дойти до банкомата, снять полную сумму и отдать её купюрами? Если нет — ты не можешь себе это позволить.
@@ -1299,7 +1696,7 @@
             <span class="trick-tag">Кофейни / Кинотеатры / Подписки</span>
             <div class="trick-sec">
               <strong>Как устроена механика:</strong>
-              В меню вводят средний вариант (кофе 350 мл за 320₽), чтобы большой (450 мл за 350₽) казался очевидной халявой на фоне маленького (250 мл за 190₽). Средний вариант почти никто не берёт — его задача продать большой.
+              В меню вводят средний вариант (кофе 350 мл за 320 ₽), чтобы большой (450 мл за 350 ₽) казался очевидной халявой на фоне маленького (250 мл за 190 ₽). Средний вариант почти никто не берёт — его задача продать большой.
             </div>
             <div class="trick-shield">
               🛡 <strong>Как не вестись:</strong> Выбирай исходя из реальной потребности, а не из «выгодной разницы». Если тебе нужен маленький кофе — бери маленький.
@@ -1341,7 +1738,7 @@
             <span class="trick-tag">Онлайн-курсы / Абонементы / Ремонт</span>
             <div class="trick-sec">
               <strong>Как устроена механика:</strong>
-              «Я уже отдал 15 000₽ за курс, надо смотреть до конца, хоть и тошнит». Человек сливает драгоценное время жизни, пытаясь «спасти» уже потерянные деньги.
+              «Я уже отдал 15 000 ₽ за курс, надо смотреть до конца, хоть и тошнит». Человек сливает драгоценное время жизни, пытаясь «спасти» уже потерянные деньги.
             </div>
             <div class="trick-shield">
               🛡 <strong>Как не вестись:</strong> Прошлые расходы — невозвратны. Единственный разумный вопрос: «Какое действие принесет мне максимальную пользу начиная с этой секунды?»
@@ -1362,7 +1759,7 @@
             <span class="trick-tag">Доставка еды / Маркетплейсы</span>
             <div class="trick-sec">
               <strong>Как устроена механика:</strong>
-              Доставка стоит 199₽. Чтобы сделать её «бесплатной», сервис предлагает добить корзину ещё на 450₽. В итоге ты тратишь лишние 251₽ на ненужную ерунду.
+              Доставка стоит 199 ₽. Чтобы сделать её «бесплатной», сервис предлагает добить корзину ещё на 450 ₽. В итоге ты тратишь лишние 251 ₽ на ненужную ерунду.
             </div>
             <div class="trick-shield">
               🛡 <strong>Как не вестись:</strong> Если корзина не добивается тем, что ты и так планировал купить завтра — просто оплати доставку. Это в 2 раза дешевле.
@@ -1381,9 +1778,9 @@
       <span class="nav-icon">🛡</span>
       <span>Сканер</span>
     </button>
-    <button class="nav-item" onclick="switchTab('tab-piggy')">
+    <button class="nav-item" onclick="switchTab('tab-saved')">
       <span class="nav-icon">💰</span>
-      <span>Копилка</span>
+      <span>Сохранено</span>
     </button>
     <button class="nav-item" onclick="switchTab('tab-quiz')">
       <span class="nav-icon">🧠</span>
@@ -1429,6 +1826,10 @@
       setTimeout(() => toast.classList.remove('show'), 2400);
     }
 
+    function fmt(n) {
+      return Number(n || 0).toLocaleString('ru-RU');
+    }
+
     // Tab Navigation
     function switchTab(tabId) {
       haptic('light');
@@ -1438,7 +1839,7 @@
       const target = document.getElementById(tabId);
       if (target) target.classList.add('active');
 
-      const tabs = ['tab-scanner', 'tab-piggy', 'tab-quiz', 'tab-tricks'];
+      const tabs = ['tab-scanner', 'tab-saved', 'tab-quiz', 'tab-tricks'];
       const idx = tabs.indexOf(tabId);
       if (idx !== -1) {
         document.querySelectorAll('.nav-item')[idx].classList.add('active');
@@ -1446,38 +1847,78 @@
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      if (tabId === 'tab-piggy') {
-        renderPiggyBank();
+      if (tabId === 'tab-saved') {
+        renderSavedScreen();
       }
     }
 
     // ─────────────────────────────────────────────────────────────
-    // TAB 1: SCANNER & CALCULATIONS
+    // 1. WHAT ARE YOU BUYING? (CATEGORY & NAME)
+    // ─────────────────────────────────────────────────────────────
+    let selectedCategory = '';
+    const itemNameInput = document.getElementById('itemNameInput');
+    const clearItemBtn = document.getElementById('clearItemBtn');
+
+    itemNameInput.addEventListener('input', () => {
+      clearItemBtn.classList.toggle('visible', itemNameInput.value.length > 0);
+    });
+
+    function clearItemInput() {
+      haptic('light');
+      itemNameInput.value = '';
+      clearItemBtn.classList.remove('visible');
+      document.querySelectorAll('.cat-tag').forEach(t => t.classList.remove('active'));
+      selectedCategory = '';
+      itemNameInput.focus();
+    }
+
+    function selectCategoryTag(btn, catName) {
+      haptic('light');
+      const wasActive = btn.classList.contains('active');
+      document.querySelectorAll('.cat-tag').forEach(t => t.classList.remove('active'));
+
+      if (wasActive) {
+        selectedCategory = '';
+      } else {
+        btn.classList.add('active');
+        selectedCategory = catName;
+        if (!itemNameInput.value.trim()) {
+          itemNameInput.value = catName;
+          clearItemBtn.classList.add('visible');
+        }
+      }
+    }
+
+    function getCurrentItemName() {
+      const typed = itemNameInput.value.trim();
+      if (typed) return typed;
+      if (selectedCategory) return selectedCategory;
+      return 'Спонтанная покупка';
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // 2. DUAL INPUTS (PRICE & INCOME: KEYBOARD + SLIDERS)
     // ─────────────────────────────────────────────────────────────
     let incomeMode = 'salary'; // 'salary', 'budget', 'none'
 
     const priceSlider = document.getElementById('priceSlider');
+    const priceInput = document.getElementById('priceInput');
     const incomeSlider = document.getElementById('incomeSlider');
-    const priceDisplay = document.getElementById('priceDisplay');
-    const incomeDisplay = document.getElementById('incomeDisplay');
+    const incomeInput = document.getElementById('incomeInput');
     const incomeLabel = document.getElementById('incomeLabel');
     const incomeInputWrap = document.getElementById('incomeInputWrap');
-
-    function fmt(n) {
-      return Number(n).toLocaleString('ru-RU');
-    }
 
     function setIncomeMode(mode) {
       haptic('medium');
       incomeMode = mode;
-      document.querySelectorAll('.chip-btn').forEach((btn, idx) => {
+      document.querySelectorAll('.chips-group .chip-btn').forEach((btn, idx) => {
         btn.classList.toggle('active', (idx === 0 && mode === 'salary') || (idx === 1 && mode === 'budget') || (idx === 2 && mode === 'none'));
       });
 
       if (mode === 'none') {
         incomeInputWrap.style.display = 'none';
-        document.getElementById('stat1Label').innerText = 'Чашек кофе';
-        document.getElementById('stat2Label').innerText = 'Порций шаурмы';
+        document.getElementById('stat1Label').innerText = 'Snickers (85 ₽)';
+        document.getElementById('stat2Label').innerText = 'Шаурма (260 ₽)';
       } else {
         incomeInputWrap.style.display = 'block';
         if (mode === 'salary') {
@@ -1493,20 +1934,72 @@
       recalcScanner();
     }
 
+    // Bi-directional price handling
+    priceSlider.addEventListener('input', () => {
+      priceInput.value = priceSlider.value;
+      recalcScanner();
+    });
+
+    priceInput.addEventListener('input', () => {
+      let val = parseFloat(priceInput.value);
+      if (isNaN(val)) val = 0;
+      if (val > parseFloat(priceSlider.max)) {
+        priceSlider.max = Math.max(150000, val);
+      }
+      priceSlider.value = val;
+      recalcScanner();
+    });
+
+    function addPrice(delta) {
+      haptic('light');
+      let current = parseFloat(priceInput.value) || 0;
+      current += delta;
+      priceInput.value = current;
+      if (current > parseFloat(priceSlider.max)) {
+        priceSlider.max = Math.max(150000, current);
+      }
+      priceSlider.value = current;
+      recalcScanner();
+    }
+
+    function resetPrice() {
+      haptic('medium');
+      priceInput.value = 0;
+      priceSlider.value = 0;
+      recalcScanner();
+    }
+
+    // Bi-directional income handling
+    incomeSlider.addEventListener('input', () => {
+      incomeInput.value = incomeSlider.value;
+      recalcScanner();
+    });
+
+    incomeInput.addEventListener('input', () => {
+      let val = parseFloat(incomeInput.value);
+      if (isNaN(val)) val = 0;
+      if (val > parseFloat(incomeSlider.max)) {
+        incomeSlider.max = Math.max(300000, val);
+      }
+      incomeSlider.value = val;
+      recalcScanner();
+    });
+
+    // ─────────────────────────────────────────────────────────────
+    // 3. SCANNER CALCULATIONS (SNICKERS, HOURS, VERDICTS)
+    // ─────────────────────────────────────────────────────────────
     function recalcScanner() {
-      const price = parseFloat(priceSlider.value) || 0;
-      const income = parseFloat(incomeSlider.value) || 1;
+      const price = parseFloat(priceInput.value) || 0;
+      const income = parseFloat(incomeInput.value) || 1;
 
-      priceDisplay.innerText = fmt(price) + ' ₽';
-      incomeDisplay.innerText = fmt(income) + ' ₽';
-      document.getElementById('saveBtnText').innerText = `Передумал покупать! В копилку (+${fmt(price)} ₽)`;
+      document.getElementById('saveBtnText').innerText = `Отказываюсь от покупки! Сохранить +${fmt(price)} ₽`;
 
-      // Equivalents
-      const coffee = Math.round(price / 180);
+      // Snickers, Shawarma, Subs (85 ₽, 260 ₽, 599 ₽)
+      const snickers = Math.round(price / 85);
       const shawarma = Math.round(price / 260);
       const subs = Math.round(price / 599);
 
-      document.getElementById('eqCoffee').innerText = coffee;
+      document.getElementById('eqSnickers').innerText = snickers;
       document.getElementById('eqShawarma').innerText = shawarma;
       document.getElementById('eqSubs').innerText = subs;
 
@@ -1517,24 +2010,22 @@
         document.getElementById('stat1Val').innerText = hours + ' ч';
         document.getElementById('stat2Val').innerText = pct + '%';
       } else if (incomeMode === 'budget') {
-        const days = ((price / budgetDaysRatio(income, price))).toFixed(1);
+        const days = (price / (income / 30)).toFixed(1);
         const pct = ((price / income) * 100).toFixed(1);
         document.getElementById('stat1Val').innerText = days + ' дн';
         document.getElementById('stat2Val').innerText = pct + '%';
       } else {
-        document.getElementById('stat1Val').innerText = coffee + ' шт';
+        document.getElementById('stat1Val').innerText = snickers + ' шт';
         document.getElementById('stat2Val').innerText = shawarma + ' шт';
       }
 
       calcRisk();
     }
 
-    function budgetDaysRatio(budget, price) {
-      return budget / 30;
-    }
-
-    priceSlider.addEventListener('input', recalcScanner);
-    incomeSlider.addEventListener('input', recalcScanner);
+    // ─────────────────────────────────────────────────────────────
+    // 4. 6 TRAPS CHECKER & SPEEDOMETER
+    // ─────────────────────────────────────────────────────────────
+    const TRAP_WEIGHTS = [25, 25, 20, 20, 15, 15];
 
     function toggleTrap(idx) {
       haptic('light');
@@ -1544,15 +2035,16 @@
       calcRisk();
     }
 
-    const TRAP_WEIGHTS = [20, 25, 15, 20, 20];
-
     function calcRisk() {
-      let risk = 0;
-      for (let i = 0; i < 5; i++) {
+      let riskScore = 0;
+      for (let i = 0; i < 6; i++) {
         const chk = document.getElementById('trap' + i);
-        if (chk.checked) risk += TRAP_WEIGHTS[i];
+        if (chk && chk.checked) {
+          riskScore += TRAP_WEIGHTS[i];
+        }
       }
 
+      const risk = Math.min(100, riskScore);
       const meterFill = document.getElementById('meterFill');
       const riskPct = document.getElementById('riskPct');
       const verdictBox = document.getElementById('verdictBox');
@@ -1566,250 +2058,391 @@
         riskPct.style.color = 'var(--accent-emerald)';
         verdictBox.style.borderLeftColor = 'var(--accent-emerald)';
         verdictTitle.innerText = '🟢 Покупка чистая (Минимум манипуляций)';
-        verdictText.innerText = 'Ловушек маркетологов не зафиксировано. Если вещь действительно закрывает потребность — можешь брать осознанно.';
+        verdictText.innerText = 'Ловушек маркетологов не зафиксировано. Если вещь действительно решает задачу — можешь брать осознанно.';
       } else if (risk <= 45) {
         riskPct.style.color = 'var(--accent-amber)';
         verdictBox.style.borderLeftColor = 'var(--accent-amber)';
         verdictTitle.innerText = '🟡 Зона риска: работает дофаминовая ловушка';
-        verdictText.innerText = 'Включи правило охлаждения: отложи товар на 24 часа. Закрой корзину и выспись. Если завтра желание сохранится — покупай.';
+        verdictText.innerText = 'Включи правило охлаждения: заморозь покупку на 24 часа. Закрой корзину и выспись. Если завтра желание сохранится — покупай.';
       } else {
         riskPct.style.color = 'var(--accent-rose)';
         verdictBox.style.borderLeftColor = 'var(--accent-rose)';
         verdictTitle.innerText = '🚨 КРИТИЧЕСКАЯ МАНИПУЛЯЦИЯ МАРКЕТОЛОГОВ!';
-        verdictText.innerText = 'Тобой управляют искусственный дефицит, анестезия Сплита или фальшивая скидка. Введи мораторий на 48 часов!';
+        verdictText.innerText = 'Тобой управляют искусственный дефицит, анестезия Сплита или фальшивая скидка. Введи мораторий минимум на 24-48 часов!';
       }
     }
 
     // ─────────────────────────────────────────────────────────────
-    // TAB 2: PIGGY BANK STORAGE
+    // 5. STORAGE: SAVED MONEY & FROZEN ITEMS (24H)
     // ─────────────────────────────────────────────────────────────
-    function getPiggyData() {
+    function getSavedData() {
       try {
-        const data = localStorage.getItem('fin_piggy_data');
+        const data = localStorage.getItem('fin_saved_purchases');
         return data ? JSON.parse(data) : [];
       } catch (e) {
         return [];
       }
     }
 
-    function savePiggyData(items) {
+    function saveSavedData(items) {
       try {
-        localStorage.setItem('fin_piggy_data', JSON.stringify(items));
+        localStorage.setItem('fin_saved_purchases', JSON.stringify(items));
       } catch (e) {}
     }
 
-    function saveToPiggyBank() {
-      const price = parseFloat(priceSlider.value) || 0;
-      let hours = 0;
+    function getFrozenData() {
+      try {
+        const data = localStorage.getItem('fin_frozen_purchases');
+        return data ? JSON.parse(data) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveFrozenData(items) {
+      try {
+        localStorage.setItem('fin_frozen_purchases', JSON.stringify(items));
+      } catch (e) {}
+    }
+
+    function calculateCurrentHours(price) {
       if (incomeMode === 'salary') {
-        const income = parseFloat(incomeSlider.value) || 1;
-        hours = (price / (income / 160));
+        const income = parseFloat(incomeInput.value) || 1;
+        return (price / (income / 160));
+      }
+      return 0;
+    }
+
+    // Action 1: Cancel purchase -> Saved Money
+    function saveToSavedPurchases() {
+      const price = parseFloat(priceInput.value) || 0;
+      if (price <= 0) {
+        showToast('Введите цену покупки больше 0 ₽');
+        return;
       }
 
-      const items = getPiggyData();
+      const hours = calculateCurrentHours(price);
+      const title = getCurrentItemName();
+      const items = getSavedData();
+
       const newItem = {
         id: Date.now(),
+        title: title,
+        category: selectedCategory || 'Без категории',
         price: price,
         hours: hours,
         date: new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
       };
+
       items.unshift(newItem);
-      savePiggyData(items);
+      saveSavedData(items);
 
       haptic('success');
-      showToast(`+${fmt(price)} ₽ сохранено в копилку! 🛑`);
+      showToast(`+${fmt(price)} ₽ сохранено! «${title}» 🛑`);
       updateHeaderBadge();
     }
 
-    function renderPiggyBank() {
-      const items = getPiggyData();
+    // Action 2: Freeze purchase for 24h
+    function freezePurchase24h() {
+      const price = parseFloat(priceInput.value) || 0;
+      if (price <= 0) {
+        showToast('Введите цену покупки больше 0 ₽');
+        return;
+      }
+
+      const hours = calculateCurrentHours(price);
+      const title = getCurrentItemName();
+      const frozen = getFrozenData();
+
+      const now = Date.now();
+      const newItem = {
+        id: now,
+        title: title,
+        category: selectedCategory || 'Без категории',
+        price: price,
+        hours: hours,
+        frozenAt: now,
+        freezeUntil: now + 24 * 60 * 60 * 1000 // 24 hours
+      };
+
+      frozen.unshift(newItem);
+      saveFrozenData(frozen);
+
+      haptic('success');
+      showToast(`🧊 «${title}» заморожен на 24 часа! Отдохни.`);
+      updateHeaderBadge();
+    }
+
+    function renderSavedScreen() {
+      const items = getSavedData();
+      const frozen = getFrozenData();
+
       const totalRub = items.reduce((acc, it) => acc + (it.price || 0), 0);
       const totalHours = items.reduce((acc, it) => acc + (it.hours || 0), 0);
+      const totalSnickers = Math.round(totalRub / 85);
 
       document.getElementById('totalSavedRub').innerText = fmt(totalRub) + ' ₽';
-      document.getElementById('totalSavedHours').innerText = `Спасенных часов жизни: ${totalHours.toFixed(1)} ч`;
+      document.getElementById('totalSavedHours').innerText = `${totalHours.toFixed(1)} ч`;
+      document.getElementById('totalSavedSnickers').innerText = `${fmt(totalSnickers)} шт`;
 
-      const listEl = document.getElementById('piggyList');
+      // Render Frozen Section
+      const frozenSection = document.getElementById('frozenSection');
+      const frozenList = document.getElementById('frozenList');
+
+      if (frozen.length === 0) {
+        frozenSection.style.display = 'none';
+      } else {
+        frozenSection.style.display = 'block';
+        const now = Date.now();
+        frozenList.innerHTML = frozen.map(item => {
+          const leftMs = item.freezeUntil - now;
+          let timeText = '';
+          if (leftMs <= 0) {
+            timeText = '⏱ 24 часа истекли! Время решить';
+          } else {
+            const leftH = Math.floor(leftMs / (1000 * 60 * 60));
+            const leftM = Math.floor((leftMs % (1000 * 60 * 60)) / (1000 * 60));
+            timeText = `🧊 Охлаждение: ${leftH}ч ${leftM}м`;
+          }
+
+          return `
+            <div class="frozen-card">
+              <div class="frozen-card-top">
+                <div>
+                  <div class="frozen-item-title">${item.title}</div>
+                  <div class="frozen-item-cat">${item.category}</div>
+                </div>
+                <div class="frozen-item-price">${fmt(item.price)} ₽</div>
+              </div>
+              <div class="frozen-timer-pill">${timeText}</div>
+              <div class="frozen-actions">
+                <button class="btn-frozen-save" onclick="resolveFrozen(${item.id}, 'save')">✅ Передумал! (+${fmt(item.price)} ₽)</button>
+                <button class="btn-frozen-bought" onclick="resolveFrozen(${item.id}, 'bought')">🛍 Купил</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Render Saved History List
+      const historyList = document.getElementById('savedHistoryList');
       if (items.length === 0) {
-        listEl.innerHTML = `
+        historyList.innerHTML = `
           <div class="empty-state">
             <div class="empty-state-icon">🛒</div>
-            <p>В копилке пока пусто.<br>Когда рука потянется купить ерунду на Ozon — нажми «Передумал покупать» в Сканере!</p>
+            <p>В сохраненных пока пусто.<br>Когда рука потянется купить ерунду на маркетплейсе — нажми «Отказываюсь от покупки» в Сканере!</p>
           </div>
         `;
         return;
       }
 
-      listEl.innerHTML = items.map(item => `
+      historyList.innerHTML = items.map(item => `
         <div class="history-item">
           <div class="history-item-info">
-            <span class="history-item-title">Некупленный товар</span>
+            <span class="history-item-title">${item.title}</span>
             <span class="history-item-date">${item.date}${item.hours ? ' • ' + item.hours.toFixed(1) + ' ч труда' : ''}</span>
           </div>
           <div class="history-item-right">
             <span class="history-item-price">+${fmt(item.price)} ₽</span>
-            <button class="btn-delete-item" onclick="deletePiggyItem(${item.id})">✕</button>
+            <button class="btn-delete-item" onclick="deleteSavedItem(${item.id})">✕</button>
           </div>
         </div>
       `).join('');
     }
 
-    function deletePiggyItem(id) {
-      haptic('light');
-      let items = getPiggyData();
-      items = items.filter(it => it.id !== id);
-      savePiggyData(items);
-      renderPiggyBank();
+    function resolveFrozen(id, action) {
+      haptic('medium');
+      let frozen = getFrozenData();
+      const target = frozen.find(it => it.id === id);
+      if (!target) return;
+
+      frozen = frozen.filter(it => it.id !== id);
+      saveFrozenData(frozen);
+
+      if (action === 'save') {
+        const saved = getSavedData();
+        saved.unshift({
+          id: Date.now(),
+          title: target.title,
+          category: target.category,
+          price: target.price,
+          hours: target.hours,
+          date: new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+        });
+        saveSavedData(saved);
+        showToast(`Победа разума! +${fmt(target.price)} ₽ в Сохраненные 🎉`);
+      } else {
+        showToast(`Покупка «${target.title}» совершена после 24-часовой паузы.`);
+      }
+
+      renderSavedScreen();
       updateHeaderBadge();
     }
 
-    function clearPiggyHistory() {
-      if (!confirm('Очистить всю историю спасенных покупок?')) return;
+    function deleteSavedItem(id) {
+      haptic('light');
+      let items = getSavedData();
+      items = items.filter(it => it.id !== id);
+      saveSavedData(items);
+      renderSavedScreen();
+      updateHeaderBadge();
+    }
+
+    function clearSavedHistory() {
+      if (!confirm('Очистить всю историю сохраненных покупок?')) return;
       haptic('medium');
-      savePiggyData([]);
-      renderPiggyBank();
+      saveSavedData([]);
+      renderSavedScreen();
       updateHeaderBadge();
     }
 
     function updateHeaderBadge() {
-      const items = getPiggyData();
+      const items = getSavedData();
       const totalRub = items.reduce((acc, it) => acc + (it.price || 0), 0);
       document.getElementById('headerSavingsVal').innerText = fmt(totalRub) + ' ₽';
     }
 
     // ─────────────────────────────────────────────────────────────
-    // TAB 3: QUIZ (10 LIFE CASES)
+    // 6. QUIZ (10 LIFE CASES WITH RANDOMIZED & SHUFFLED OPTIONS)
     // ─────────────────────────────────────────────────────────────
-    const QUIZ_DATA = [
+    const QUIZ_RAW_DATA = [
       {
         badge: "Ловушка 1: Корзина WB",
-        q: "До бесплатной доставки не хватает 200₽. Приложение настойчиво советует докинуть органайзер за 400₽. Твоё действие?",
-        opts: [
-          "Докину органайзер — доставка же бесплатная!",
-          "Оплачу 200₽ за доставку только нужного",
-          "Выберу ещё более дорогой органайзер, чтобы скидка росла"
+        q: "До бесплатной доставки не хватает 200 ₽. Маркетплейс настойчиво советует докинуть чехол за 450 ₽. Твоё действие?",
+        correctText: "Оплачу 200 ₽ за доставку только нужного",
+        wrongTexts: [
+          "Докину чехол — доставка же бесплатная!",
+          "Выберу ещё более дорогой чехол, чтобы выгода росла"
         ],
-        correct: 1,
-        explain: "Ты заплатил 400₽, чтобы избежать платы в 200₽. В итоге минус 200₽ из кошелька и бесполезный пластик в шкафу."
+        explain: "Ты заплатил бы 450 ₽, чтобы избежать платы в 200 ₽. В итоге минус 250 ₽ из кошелька и ненужный силикон на полке."
       },
       {
         badge: "Ловушка 2: Яндекс Сплит / Долями",
-        q: "Кроссовки стоят 12 000₽. Есть опция «Долями»: 4 списания по 3 000₽. Берём?",
-        opts: [
-          "Да! 3 000₽ в месяц — вообще неощутимо",
-          "Тест наличными: если не готов прямо сейчас отдать 12 000₽ бумажными купюрами — не беру",
-          "Возьму в рассрочку, а свободные деньги положу на вклад под 15%"
+        q: "Кроссовки стоят 12 000 ₽. Есть опция «Долями»: 4 списания всего по 3 000 ₽. Берём?",
+        correctText: "Тест наличными: если не готов прямо сейчас отдать 12 000 ₽ бумажными купюрами — не беру",
+        wrongTexts: [
+          "Да! 3 000 ₽ в месяц — вообще неощутимо для бюджета",
+          "Возьму Сплитом, а свободные деньги положу на накопительный счет под 15%"
         ],
-        correct: 1,
         explain: "Сплит не делает вещь дешевле. Он лишь отключает психологический барьер и боль расставания с деньгами."
       },
       {
         badge: "Ловушка 3: Приманка в кофейне",
-        q: "Кофе: Маленький (190₽), Средний (320₽), Большой (350₽). Что заказать, если хотел просто попить кофе?",
-        opts: [
-          "Большой — за доплату 30₽ получаю почти вдвое больше!",
-          "Маленький — это ровно столько, сколько я хотел изначально",
-          "Средний — золотая середина"
+        q: "Кофе: Маленький (190 ₽), Средний (320 ₽), Большой (350 ₽). Что заказать, если хотел просто выпить кофе?",
+        correctText: "Маленький — это ровно столько объема, сколько я изначально хотел",
+        wrongTexts: [
+          "Большой — ведь за доплату всего 30 ₽ получаю почти вдвое больше объема!",
+          "Средний — компромиссная золотая середина"
         ],
-        correct: 1,
-        explain: "Средний кофе за 320₽ — это decoy (приманка). Он существует только для того, чтобы ты отдал 350₽ за большой."
+        explain: "Средний кофе за 320 ₽ — это приманка (decoy). Он существует только для того, чтобы ты отдал 350 ₽ за большой."
       },
       {
         badge: "Ловушка 4: Скидка 84% на WB",
-        q: "Куртка с перечёркнутой ценой 28 000₽ отдается за 4 500₽. Настоящая ли скидка?",
-        opts: [
-          "Срочно брать, выгода более 23 000₽!",
-          "Фейковый якорь. Продавец сам рисует старую цену. Проверю историю цен",
-          "Дождусь скидки 90%"
+        q: "Куртка с перечёркнутой ценой 28 000 ₽ отдается за 4 500 ₽. Настоящая ли это скидка?",
+        correctText: "Фейковый якорь. Продавец сам рисует старую цену. Оцениваю, стоит ли вещь 4 500 ₽",
+        wrongTexts: [
+          "Срочно брать, экономия более 23 000 ₽!",
+          "Подожду, пока перечеркнут до 35 000 ₽ и скинут 90%"
         ],
-        correct: 1,
-        explain: "Перечеркнутая цена ничем не регулируется. Реальная розничная цена этой куртки — около 3 500 – 4 500₽."
+        explain: "Перечеркнутая цена ничем не регулируется. Реальная розничная цена этой куртки обычно около 3 500 – 4 500 ₽."
       },
       {
         badge: "Ловушка 5: Сгорающий кэшбэк",
-        q: "Купи товар на 1 000₽ дороже и получи 2 000 баллов, которые сгорят ровно через 14 дней. Выгодно?",
-        opts: [
-          "Конечно, чистый плюс 1 000₽!",
-          "Нет. Это поводок, заставляющий вернуться и потратить ещё больше до дедлайна",
-          "Оформлю и сразу продам баллы на Авито"
+        q: "Купи товар на 1 000 ₽ дороже и получи 2 000 баллов, которые сгорят ровно через 14 дней. Выгодно?",
+        correctText: "Нет. Это поводок, заставляющий вернуться и потратить ещё больше до дедлайна",
+        wrongTexts: [
+          "Конечно, чистая математическая выгода 1 000 ₽!",
+          "Оформлю и потом обменяю баллы у друзей"
         ],
-        correct: 1,
         explain: "Баллы со сроком действия — не подарок, а инструмент навязывания повторной внеплановой покупки."
       },
       {
         badge: "Ловушка 6: Деньги уже уплачены",
-        q: "Купил онлайн-курс за 10 000₽. Через 3 урока понял, что материал бездарный. Что делать?",
-        opts: [
-          "Досмотреть до конца через силу — деньги же заплачены!",
-          "Бросить немедленно. Деньги уже не вернуть, а время ещё можно спасти",
-          "Включать на скорости x3 фоном"
+        q: "Купил онлайн-курс за 10 000 ₽. Через 3 урока понял, что материал бездарный и бесполезный. Что делать?",
+        correctText: "Бросить немедленно. Деньги уже не вернуть, а время жизни ещё можно спасти",
+        wrongTexts: [
+          "Досмотреть до конца через силу — деньги же уплачены!",
+          "Включать на скорости x3 фоном во время сна"
         ],
-        correct: 1,
         explain: "Ловушка невозвратных затрат: досматривая унылый курс, ты платишь за ошибку дважды — деньгами и часами жизни."
       },
       {
-        badge: "Ловушка 7: Скидка 1 000₽",
-        q: "Ехать 30 минут ради скидки 1 000₽ на наушники за 2 500₽ vs ради скидки 1 000₽ на ноутбук за 90 000₽. Где выгода больше?",
-        opts: [
-          "На наушники — там скидка целых 40%!",
-          "Выгода абсолютно одинакова: 1 000₽ в кармане и 30 минут твоего времени",
-          "На ноутбук — вещь дороже, солиднее"
+        badge: "Ловушка 7: Скидка 1 000 ₽",
+        q: "Ехать 30 минут ради скидки 1 000 ₽ на наушники за 2 500 ₽ vs ради скидки 1 000 ₽ на ноутбук за 90 000 ₽. Где выгода больше?",
+        correctText: "Выгода абсолютно одинакова: 1 000 ₽ в кармане и 30 минут твоего времени",
+        wrongTexts: [
+          "На наушники — там скидка целых 40% от цены!",
+          "На ноутбук — вещь дороже и статуснее"
         ],
-        correct: 1,
         explain: "Тысяча рублей равна тысяче рублей. Мозг оценивает проценты, а не абсолютные деньги. Время стоит одинаково."
       },
       {
-        badge: "Ловушка 8: Триал за 1₽",
-        q: "Подписка: 30 дней за 1₽, далее 599₽/мес. Твоя тактика?",
-        opts: [
-          "Оформлю, потом когда-нибудь отменю",
-          "Если оформляю — ставлю напоминание в календарь ПРЯМО СЕЙЧАС или сразу отменяю автопродление",
+        badge: "Ловушка 8: Триал за 1 ₽",
+        q: "Подписка: 30 дней за 1 ₽, далее 599 ₽/мес. Твоя грамотная тактика?",
+        correctText: "Если оформляю — ставлю будильник прямо сейчас или сразу же отменяю автопродление в профиле",
+        wrongTexts: [
+          "Оформлю, потом как-нибудь вспомню и отключу",
           "Привяжу пустую виртуальную карту и забуду"
         ],
-        correct: 1,
-        explain: "Бизнес-модель триалов держится на забывчивости людей, которые годами платят за неиспользуемые сервисы."
+        explain: "Бизнес-модель триалов держится на забывчивости людей, которые годами платят за сервисы, которыми не пользуются."
       },
       {
-        badge: "Ловушка 9: Цепная реакция",
-        q: "Купил планшет по акции. Магазин предлагает чехол, защитное стекло и стилус со скидкой 10%.",
-        opts: [
-          "Брать всё скопом, пока действует скидка",
-          "Стоп. Оценить аксессуары как отдельную покупку и сравнить цены на маркетплейсах",
-          "Взять всё самое дорогое для защиты гаджета"
+        badge: "Ловушка 9: Эффект Дидро",
+        q: "Купил новый смартфон по акции. Магазин сразу на кассе предлагает чехол, стекло и блок питания со скидкой 10%.",
+        correctText: "Пауза. Оценить аксессуары как отдельную покупку и сравнить цены на маркетплейсах",
+        wrongTexts: [
+          "Брать всё скопом на радостях, пока действует спеццена",
+          "Взять всё самое премиальное для защиты экрана"
         ],
-        correct: 1,
         explain: "Продавцы зарабатывают на допах больше, чем на самом гаджете. Эйфория от покупки отключает бдительность."
       },
       {
         badge: "Ловушка 10: Потерянный билет",
-        q: "Билет в кино стоил 500₽, и ты потерял его у входа. А в другом случае ты потерял купюру 500₽ перед покупкой. Купишь ли билет?",
-        opts: [
-          "Если потерял купюру — куплю, если потерял билет — нет, 1000₽ за кино жалко",
-          "Оба случая финансово одинаковы: потеряно 500₽, вопрос только в том, стоит ли фильм ещё 500₽",
+        q: "Билет в кино стоил 500 ₽, и ты потерял его у входа. В другом случае ты потерял купюру 500 ₽ перед покупкой. Пойдешь в кино?",
+        correctText: "Оба случая финансово одинаковы: потеряно 500 ₽, вопрос только в том, стоит ли фильм ещё 500 ₽",
+        wrongTexts: [
+          "Если потерял купюру — пойду, если потерял билет — нет, 1 000 ₽ за сеанс жалко",
           "Развернусь и уйду домой в обоих случаях"
         ],
-        correct: 1,
-        explain: "Ментальный учет: мозг ведёт отдельные 'счета'. Но для твоего кошелька потеря купюры и билета идентична."
+        explain: "Ментальный учет: мозг делит деньги на воображаемые 'статьи'. Но для кошелька потеря купюры и билета идентична."
       }
     ];
 
     let currentQ = 0;
     let quizScore = 0;
     let answered = false;
+    let currentShuffledOptions = [];
+
+    // Shuffle options so correct answer position (А, Б, В) is completely randomized
+    function shuffleAnswers(qRaw) {
+      const all = [
+        { text: qRaw.correctText, isCorrect: true },
+        { text: qRaw.wrongTexts[0], isCorrect: false },
+        { text: qRaw.wrongTexts[1], isCorrect: false }
+      ];
+
+      for (let i = all.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [all[i], all[j]] = [all[j], all[i]];
+      }
+      return all;
+    }
 
     function renderQuestion() {
       answered = false;
-      const q = QUIZ_DATA[currentQ];
-      document.getElementById('quizProgFill').style.width = ((currentQ + 1) / QUIZ_DATA.length * 100) + '%';
+      const q = QUIZ_RAW_DATA[currentQ];
+      currentShuffledOptions = shuffleAnswers(q);
+
+      document.getElementById('quizProgFill').style.width = ((currentQ + 1) / QUIZ_RAW_DATA.length * 100) + '%';
       document.getElementById('quizBadge').innerText = q.badge;
       document.getElementById('quizQTitle').innerText = q.q;
 
       const letters = ['А', 'Б', 'В'];
       const optsEl = document.getElementById('quizOptions');
-      optsEl.innerHTML = q.opts.map((opt, i) => `
+      optsEl.innerHTML = currentShuffledOptions.map((opt, i) => `
         <button class="quiz-opt-btn" onclick="selectAnswer(${i})">
           <strong style="color:var(--text-dim);">${letters[i]}.</strong>
-          <span>${opt}</span>
+          <span>${opt.text}</span>
         </button>
       `).join('');
 
@@ -1825,33 +2458,36 @@
       if (answered) return;
       answered = true;
 
-      const q = QUIZ_DATA[currentQ];
+      const q = QUIZ_RAW_DATA[currentQ];
       const buttons = document.querySelectorAll('.quiz-opt-btn');
-      const isCorrect = chosenIdx === q.correct;
+      const chosen = currentShuffledOptions[chosenIdx];
 
-      if (isCorrect) {
+      if (chosen.isCorrect) {
         haptic('success');
         quizScore++;
         buttons[chosenIdx].classList.add('correct');
       } else {
         haptic('warning');
         buttons[chosenIdx].classList.add('wrong');
-        buttons[q.correct].classList.add('correct');
+        // Highlight correct button
+        currentShuffledOptions.forEach((opt, idx) => {
+          if (opt.isCorrect) buttons[idx].classList.add('correct');
+        });
       }
 
       const explainEl = document.getElementById('quizExplain');
-      explainEl.innerHTML = `<strong>${isCorrect ? '✅ В яблочко!' : '❌ Ловушка сработала!'}</strong><br>${q.explain}`;
+      explainEl.innerHTML = `<strong>${chosen.isCorrect ? '✅ В яблочко!' : '❌ Ловушка сработала!'}</strong><br>${q.explain}`;
       explainEl.classList.add('show');
 
       const btnNext = document.getElementById('btnNextQ');
       btnNext.classList.add('show');
-      btnNext.innerText = (currentQ === QUIZ_DATA.length - 1) ? 'Завершить тест 🏁' : 'Дальше ➔';
+      btnNext.innerText = (currentQ === QUIZ_RAW_DATA.length - 1) ? 'Завершить тест 🏁' : 'Дальше ➔';
     }
 
     function nextQuizQuestion() {
       haptic('light');
       currentQ++;
-      if (currentQ < QUIZ_DATA.length) {
+      if (currentQ < QUIZ_RAW_DATA.length) {
         renderQuestion();
       } else {
         finishQuiz();
@@ -1863,11 +2499,11 @@
       const finishScreen = document.getElementById('quizFinishScreen');
       finishScreen.style.display = 'block';
 
-      document.getElementById('finishScore').innerText = `${quizScore} / ${QUIZ_DATA.length}`;
+      document.getElementById('finishScore').innerText = `${quizScore} / ${QUIZ_RAW_DATA.length}`;
 
       let emoji = '🔴';
-      let title = 'Импульсивный Транжира';
-      let desc = 'Маркетологи тебя обожают. Ты их квартальный бонус! Установи бота на рабочий стол и проверяй каждую покупку.';
+      let title = 'Импульсивный Покупатель';
+      let desc = 'Маркетологи тебя обожают. Ты их квартальный бонус! Проверяй каждую покупку в Сканере.';
 
       if (quizScore >= 9) {
         emoji = '💎';
@@ -1899,7 +2535,7 @@
     }
 
     // ─────────────────────────────────────────────────────────────
-    // TAB 4: ACCORDIONS
+    // 7. TRICKS ACCORDION
     // ─────────────────────────────────────────────────────────────
     function toggleAccordion(el) {
       haptic('light');
@@ -1910,7 +2546,7 @@
       }
     }
 
-    // Initial load
+    // Initialize on load
     window.addEventListener('DOMContentLoaded', () => {
       recalcScanner();
       updateHeaderBadge();
