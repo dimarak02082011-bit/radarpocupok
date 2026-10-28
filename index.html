@@ -136,31 +136,39 @@
     }
 
     .savings-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      padding: 6px 11px;
-      border-radius: var(--radius-pill);
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--accent-emerald);
-      cursor: pointer;
-      white-space: nowrap;
-      flex-shrink: 0;
+      display: inline-flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      background: rgba(16, 185, 129, 0.12) !important;
+      border: 1px solid rgba(16, 185, 129, 0.25) !important;
+      padding: 6px 12px !important;
+      border-radius: var(--radius-pill) !important;
+      font-size: 13px !important;
+      font-weight: 700 !important;
+      color: var(--accent-emerald) !important;
+      cursor: pointer !important;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+      min-width: max-content !important;
+      line-height: 1 !important;
       transition: all 0.2s ease;
     }
 
     .savings-badge span {
-      white-space: nowrap;
-      display: inline-block;
+      white-space: nowrap !important;
+      display: inline !important;
+      line-height: 1 !important;
     }
 
     #headerSavingsVal {
-      font-family: 'JetBrains Mono', monospace;
-      white-space: nowrap;
-      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace !important;
+      white-space: nowrap !important;
+      display: inline !important;
+      font-weight: 700 !important;
+      line-height: 1 !important;
     }
 
     .savings-badge:active {
@@ -1527,7 +1535,7 @@
       </div>
     </div>
     <div class="header-right">
-      <div class="savings-badge" onclick="switchTab('tab-saved')"><span>💰</span><span id="headerSavingsVal">0 ₽</span></div>
+      <div class="savings-badge" onclick="switchTab('tab-saved')"><span>💰</span><span id="headerSavingsVal">0&nbsp;₽</span></div>
       <button class="help-btn" onclick="openOnboarding(true)" title="Обучение">❓</button>
     </div>
   </header>
@@ -2592,7 +2600,7 @@
     function updateHeaderBadge() {
       const items = getSavedData();
       const totalRub = items.reduce((acc, it) => acc + (it.price || 0), 0);
-      document.getElementById('headerSavingsVal').innerText = fmt(totalRub) + ' ₽';
+      document.getElementById('headerSavingsVal').textContent = fmt(totalRub) + '\u00A0₽';
     }
 
     // ─────────────────────────────────────────────────────────────
