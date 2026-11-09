@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Радар Покупок — Умный фильтр спонтанных трат</title>
   <!-- Telegram Web App JS -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -101,6 +104,7 @@
     .brand-text {
       min-width: 0;
       overflow: hidden;
+      flex: 1 1 auto;
     }
 
     .brand-text h1 {
@@ -131,7 +135,7 @@
       align-items: center;
       gap: 6px;
       flex-shrink: 0;
-      margin-left: 8px;
+      margin-left: 6px;
       white-space: nowrap;
     }
 
@@ -141,10 +145,10 @@
       flex-wrap: nowrap !important;
       align-items: center !important;
       justify-content: center !important;
-      gap: 6px !important;
+      gap: 5px !important;
       background: rgba(16, 185, 129, 0.12) !important;
       border: 1px solid rgba(16, 185, 129, 0.25) !important;
-      padding: 6px 12px !important;
+      padding: 5px 11px !important;
       border-radius: var(--radius-pill) !important;
       font-size: 13px !important;
       font-weight: 700 !important;
@@ -155,18 +159,39 @@
       min-width: max-content !important;
       line-height: 1 !important;
       transition: all 0.2s ease;
+      user-select: none;
     }
 
-    .savings-badge span {
-      white-space: nowrap !important;
-      display: inline !important;
+    .savings-badge .badge-icon {
+      font-size: 13px !important;
       line-height: 1 !important;
+      display: inline-block !important;
+      flex-shrink: 0 !important;
+    }
+
+    .savings-badge .badge-amount {
+      display: inline-flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      align-items: baseline !important;
+      white-space: nowrap !important;
+      gap: 2px !important;
+      line-height: 1 !important;
+      flex-shrink: 0 !important;
     }
 
     #headerSavingsVal {
       font-family: 'JetBrains Mono', monospace !important;
       white-space: nowrap !important;
-      display: inline !important;
+      display: inline-block !important;
+      font-weight: 700 !important;
+      line-height: 1 !important;
+    }
+
+    .badge-cur {
+      font-family: 'JetBrains Mono', monospace !important;
+      white-space: nowrap !important;
+      display: inline-block !important;
       font-weight: 700 !important;
       line-height: 1 !important;
     }
@@ -311,7 +336,7 @@
       border-radius: var(--radius-md);
       padding: 12px 38px 12px 14px;
       color: var(--text-main);
-      font-size: 14px;
+      font-size: 16px;
       font-family: inherit;
       outline: none;
       user-select: text;
@@ -1535,7 +1560,10 @@
       </div>
     </div>
     <div class="header-right">
-      <div class="savings-badge" onclick="switchTab('tab-saved')"><span>💰</span><span id="headerSavingsVal">0&nbsp;₽</span></div>
+      <div class="savings-badge" onclick="switchTab('tab-saved')" title="Баланс спасенных средств">
+        <span class="badge-icon">💰</span>
+        <span class="badge-amount"><span id="headerSavingsVal">0</span><span class="badge-cur">₽</span></span>
+      </div>
       <button class="help-btn" onclick="openOnboarding(true)" title="Обучение">❓</button>
     </div>
   </header>
@@ -1583,7 +1611,7 @@
               <span class="num-input-currency">₽</span>
             </div>
           </div>
-          <input type="range" class="styled-slider" id="priceSlider" min="500" max="150000" step="500" value="5000">
+          <input type="range" class="styled-slider" id="priceSlider" min="0" max="150000" step="100" value="5000">
 
           <!-- Quick price chips -->
           <div class="quick-chips-row">
@@ -1603,7 +1631,7 @@
               <span class="num-input-currency">₽</span>
             </div>
           </div>
-          <input type="range" class="styled-slider" id="incomeSlider" min="10000" max="300000" step="5000" value="80000">
+          <input type="range" class="styled-slider" id="incomeSlider" min="0" max="300000" step="1000" value="80000">
         </div>
       </div>
 
@@ -2100,6 +2128,15 @@
         document.querySelectorAll('.nav-item')[idx].classList.add('active');
       }
 
+      // Telegram BackButton support
+      if (window.Telegram?.WebApp?.BackButton) {
+        if (tabId === 'tab-scanner') {
+          Telegram.WebApp.BackButton.hide();
+        } else {
+          Telegram.WebApp.BackButton.show();
+        }
+      }
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
       if (tabId === 'tab-saved') {
@@ -2129,6 +2166,10 @@
 
     itemNameInput.addEventListener('input', () => {
       clearItemBtn.classList.toggle('visible', itemNameInput.value.length > 0);
+      if (selectedCategory && itemNameInput.value !== selectedCategory) {
+        document.querySelectorAll('.cat-tag').forEach(t => t.classList.remove('active'));
+        selectedCategory = '';
+      }
     });
 
     function clearItemInput() {
@@ -2275,31 +2316,46 @@
     });
 
     function recalcScanner() {
-      const price = parseFloat(priceInput.value) || 0;
-      const income = parseFloat(incomeInput.value) || 1;
+      const price = Math.max(0, parseFloat(priceInput.value) || 0);
+      const income = Math.max(0, parseFloat(incomeInput.value) || 0);
 
-      document.getElementById('saveBtnText').innerText = `Отказываюсь от покупки! Сохранить +${fmt(price)} ₽`;
+      const saveBtnTextEl = document.getElementById('saveBtnText');
+      if (saveBtnTextEl) {
+        saveBtnTextEl.innerText = price > 0
+          ? `Отказываюсь от покупки! Сохранить +${fmt(price)} ₽`
+          : `Отказываюсь от покупки! Сохранить`;
+      }
 
       // Snickers, Shawarma, Subs (85 ₽, 260 ₽, 599 ₽)
-      const snickers = Math.round(price / 85);
-      const shawarma = Math.round(price / 260);
-      const subs = Math.round(price / 599);
+      const snickers = price > 0 ? Math.round(price / 85) : 0;
+      const shawarma = price > 0 ? Math.round(price / 260) : 0;
+      const subs = price > 0 ? Math.round(price / 599) : 0;
 
       document.getElementById('eqSnickers').innerText = snickers;
       document.getElementById('eqShawarma').innerText = shawarma;
       document.getElementById('eqSubs').innerText = subs;
 
       if (incomeMode === 'salary') {
-        const hourly = income / 160;
-        const hours = (price / hourly).toFixed(1);
-        const pct = ((price / income) * 100).toFixed(1);
-        document.getElementById('stat1Val').innerText = hours + ' ч';
-        document.getElementById('stat2Val').innerText = pct + '%';
+        if (income <= 0 || price <= 0) {
+          document.getElementById('stat1Val').innerText = '0 ч';
+          document.getElementById('stat2Val').innerText = '0%';
+        } else {
+          const hourly = income / 160;
+          const hours = (price / hourly).toFixed(1);
+          const pct = Math.min(999, ((price / income) * 100)).toFixed(1);
+          document.getElementById('stat1Val').innerText = hours + ' ч';
+          document.getElementById('stat2Val').innerText = pct + '%';
+        }
       } else if (incomeMode === 'budget') {
-        const days = (price / (income / 30)).toFixed(1);
-        const pct = ((price / income) * 100).toFixed(1);
-        document.getElementById('stat1Val').innerText = days + ' дн';
-        document.getElementById('stat2Val').innerText = pct + '%';
+        if (income <= 0 || price <= 0) {
+          document.getElementById('stat1Val').innerText = '0 дн';
+          document.getElementById('stat2Val').innerText = '0%';
+        } else {
+          const days = (price / (income / 30)).toFixed(1);
+          const pct = Math.min(999, ((price / income) * 100)).toFixed(1);
+          document.getElementById('stat1Val').innerText = days + ' дн';
+          document.getElementById('stat2Val').innerText = pct + '%';
+        }
       } else {
         document.getElementById('stat1Val').innerText = snickers + ' шт';
         document.getElementById('stat2Val').innerText = shawarma + ' шт';
@@ -2393,9 +2449,15 @@
     }
 
     function calculateCurrentHours(price) {
+      if (price <= 0) return 0;
       if (incomeMode === 'salary') {
-        const income = parseFloat(incomeInput.value) || 1;
+        const income = parseFloat(incomeInput.value) || 0;
+        if (income <= 0) return 0;
         return (price / (income / 160));
+      } else if (incomeMode === 'budget') {
+        const income = parseFloat(incomeInput.value) || 0;
+        if (income <= 0) return 0;
+        return (price / (income / 240));
       }
       return 0;
     }
@@ -2600,7 +2662,8 @@
     function updateHeaderBadge() {
       const items = getSavedData();
       const totalRub = items.reduce((acc, it) => acc + (it.price || 0), 0);
-      document.getElementById('headerSavingsVal').textContent = fmt(totalRub) + '\u00A0₽';
+      const el = document.getElementById('headerSavingsVal');
+      if (el) el.textContent = fmt(totalRub);
     }
 
     // ─────────────────────────────────────────────────────────────
@@ -2872,8 +2935,12 @@
     let currentOnboardingStep = 0;
 
     function checkOnboarding() {
-      const seen = localStorage.getItem('radar_onboarding_v1');
-      if (!seen) {
+      try {
+        const seen = localStorage.getItem('radar_onboarding_v1');
+        if (!seen) {
+          openOnboarding(false);
+        }
+      } catch (e) {
         openOnboarding(false);
       }
     }
@@ -2911,7 +2978,9 @@
 
     function finishOnboarding() {
       haptic('success');
-      localStorage.setItem('radar_onboarding_v1', 'true');
+      try {
+        localStorage.setItem('radar_onboarding_v1', 'true');
+      } catch (e) {}
       document.getElementById('onboardingOverlay').classList.remove('open');
     }
 
@@ -2919,6 +2988,23 @@
     // 10. INITIALIZATION
     // ─────────────────────────────────────────────────────────────
     window.addEventListener('DOMContentLoaded', () => {
+      // Setup Telegram BackButton callback
+      if (window.Telegram?.WebApp?.BackButton) {
+        Telegram.WebApp.BackButton.onClick(() => {
+          haptic('light');
+          switchTab('tab-scanner');
+        });
+      }
+
+      // Auto-refresh frozen timers every 15s if viewing Saved tab
+      setInterval(() => {
+        const tabSaved = document.getElementById('tab-saved');
+        if (tabSaved && tabSaved.classList.contains('active')) {
+          const frozen = getFrozenData();
+          if (frozen.length > 0) renderSavedScreen();
+        }
+      }, 15000);
+
       // Dismiss keyboard on touching range sliders or clicking controls
       document.querySelectorAll('input[type="range"]').forEach(slider => {
         slider.addEventListener('touchstart', dismissKeyboard, { passive: true });
